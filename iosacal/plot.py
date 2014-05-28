@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 # filename: plot.py
-# Copyright 2009, 2013 Stefano Costa <steko@iosa.it>
+# Copyright 2009, 2013-2014 Stefano Costa <steko@iosa.it>
 #
 # This file is part of IOSACal, the IOSA Radiocarbon Calibration Library.
 
@@ -24,8 +24,6 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 
-from pylab import normpdf
-
 from iosacal import hpd, util
 
 COLORS = {
@@ -39,29 +37,23 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
     sigma_m = calibrated_age.radiocarbon_sample.sigma
     radiocarbon_sample_id = calibrated_age.radiocarbon_sample.id
     calibration_curve = calibrated_age.calibration_curve
-    calibration_curve_title = calibrated_age.calibration_curve.title
     intervals68 = calibrated_age.intervals68
     intervals95 = calibrated_age.intervals95
-    sample_interval = 1950 - calibration_curve[:,0].copy() # for determination plot
+    sample_interval = calibration_curve[:,0].copy() # for determination plot
 
+    # adjust plot bounds
     min_year, max_year = (50000, -50000)
-
-    minx = min(calibrated_age[:,0])
-    maxx = max(calibrated_age[:,0])
-
-    if min_year < minx:
-        pass
-    else:
-        min_year = minx
-    if max_year > maxx:
-        pass
-    else:
-        max_year = maxx
+    min_x = min(calibrated_age[:,0])
+    max_x = max(calibrated_age[:,0])
+    if min_year > min_x:
+        min_year = min_x
+    if max_year < max_x:
+        max_year = max_x
 
     # do not plot the part of calibration curve that is not visible
     # greatly reduces execution time \o/
-    cutmin = calibration_curve[calibration_curve[:,0]>minx]
-    cutmax = cutmin[cutmin[:,0]<maxx]
+    cutmin = calibration_curve[calibration_curve[:,0]>min_x]
+    cutmax = cutmin[cutmin[:,0]<max_x]
     calibration_curve = cutmax
 
     if BP is False:
@@ -86,6 +78,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
         )
 
     fig = plt.figure(figsize=(12,8))
+    fig.clear()
     ax1 = plt.subplot(111)
     ax1.set_axis_bgcolor(COLORS['bgcolor'])
     plt.xlabel("Calibrated age (%s)" % ad_bp_label)
@@ -101,11 +94,11 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
          verticalalignment='center',
          transform = ax1.transAxes,
          bbox=dict(facecolor='white', alpha=0.9, lw=0))
-    plt.text(0.0, 1.0,'IOSACal v0.1; %s' % calibration_curve_title,
+    plt.text(0.0, 1.0,'IOSACal v0.2; %s' % calibration_curve.title,
          horizontalalignment='left',
          verticalalignment='bottom',
          transform = ax1.transAxes,
-         size=7,
+         size=10,
          bbox=dict(facecolor='white', alpha=0.9, lw=0))
 
     # Calendar Age
@@ -114,6 +107,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
 
     if oxcal is True:
         # imitate OxCal
+        ax1.set_axis_bgcolor('white')
         ax2.fill(
             calibrated_age[:,0],
             calibrated_age[:,1] + max(calibrated_age[:,1])*0.3,
@@ -147,14 +141,14 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
     ax2.set_axis_off()
 
     # Radiocarbon Age
-    sample_curve = normpdf(sample_interval, f_m, sigma_m)
+    sample_curve = mlab.normpdf(sample_interval, f_m, sigma_m)
 
     ax3 = plt.twiny(ax1)
     ax3.fill(
         sample_curve,
         sample_interval,
-        'r',
-        alpha=0.3
+        '1.0',
+        alpha=0.8
         )
     ax3.set_xbound(0,max(sample_curve)*4)
     ax3.set_axis_off()
@@ -229,11 +223,8 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
     ax1.set_xbound(min(calibrated_age[:,0]),max(calibrated_age[:,0]))
     ax1.invert_xaxis()          # if BP == True
 
-    #plt.savefig('image_%d±%d.pdf' %(f_m, sigma_m))
     if output:
         plt.savefig(output)
-    fig = plt.gcf()
-    fig.clear()
 
 
 def multi_plot(calibrated_ages,name,oxcal=False):
