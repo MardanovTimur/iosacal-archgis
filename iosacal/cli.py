@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 # filename: cli.py
-# Copyright 2008-2010, 2013 Stefano Costa <steko@iosa.it>
+# Copyright 2008-2010, 2013-2014 Stefano Costa <steko@iosa.it>
 #
 # This file is part of IOSACal, the IOSA Radiocarbon Calibration Library.
 
@@ -79,11 +79,11 @@ group0.add_option("--no-single",
                 action="store_false",
                 dest="single",
                 help="don't generate single plots for each sample")
-group0.add_option("-m", "--multiple",
+group0.add_option("-m", "--stacked",
                 action="store_true",
                 default=False,
-                dest="multi",
-                help="generate compoud plot with all samples")
+                dest="stacked",
+                help="generate stacked plot with all samples")
 parser.add_option_group(group0)
 group = OptionGroup(parser, 'BP or BC/AD output',
                     'Use these two mutually exclusive options to choose which '
@@ -122,11 +122,12 @@ def main():
             plot.single_plot(ca,oxcal=options.oxcal,output=outputname)
         else:
             sys.stdout.write(text.single_text(ca))
-    if options.plot and options.multi is True:
-        plot.multi_plot(
+    if options.plot and options.stacked is True:
+        plot.stacked_plot(
                         calibrated_ages,
                         oxcal=options.oxcal,
-                        name=options.name
+                        name=options.name,
+                        output='{}.pdf'.format(options.name)
                         )
 
 if __name__ == '__main__':
