@@ -14,7 +14,7 @@ setup(name='iosacal',
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Operating System :: OS Independent',
-        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
         'Topic :: Scientific/Engineering',
         ],
       keywords='radiocarbon calibration',
@@ -28,8 +28,8 @@ setup(name='iosacal',
       zip_safe=False,
       install_requires=[
          # -*- Extra requirements: -*-
-        'numpy >= 1.7.0',
-        'matplotlib >= 1.2.0'
+        'numpy >= 1.8.0',
+        'matplotlib >= 1.3.0'
       ],
       entry_points= {
         'console_scripts': [
