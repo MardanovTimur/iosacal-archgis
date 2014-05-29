@@ -49,7 +49,7 @@ class CalibrationCurve(np.ndarray):
     Calibration data is loaded at runtime from source data files, and
     exposed a ``numpy.ndarray`` object.
 
-    Taken from
+    Implementation from
     http://docs.scipy.org/doc/numpy/user/basics.subclassing.html
 
     '''
@@ -110,7 +110,7 @@ class RadiocarbonDetermination(object):
         return cal_age
 
     def __str__(self):
-        return "RadiocarbonSample( {id} {date} ± {sigma} )".format(**self.__dict__)
+        return "RadiocarbonSample( {id} : {date:.0f} ± {sigma:.0f} )".format(**self.__dict__)
 
 
 class R(RadiocarbonDetermination):
@@ -126,7 +126,7 @@ class CalAge(np.ndarray):
     It is expressed as a probability distribution on the calBP
     calendar scale.
 
-    Taken from
+    Implementation from
     http://docs.scipy.org/doc/numpy/user/basics.subclassing.html
 
     '''

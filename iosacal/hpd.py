@@ -49,9 +49,9 @@ def next(n, array):
         next = None
     return next
 
-def alsuren_hpd(calibrated_curve, alpha):
+def alsuren_hpd(calibrated_age, alpha):
     '''Return year spans that have the required Highest Probability Density.'''
-    hpd_curve = calibrated_curve.copy()
+    hpd_curve = calibrated_age.copy()
     # sort rows by second column in inverse order
     hpd_sorted = hpd_curve[hpd_curve[:,1].argsort(),][::-1]
     hpd_cumsum = hpd_sorted[:,1].cumsum()
@@ -60,7 +60,7 @@ def alsuren_hpd(calibrated_curve, alpha):
     
     threshold_index = hpd_cumsum.searchsorted(1 - alpha)
     threshold_p = hpd_sorted[threshold_index][1]
-    threshold_index = calibrated_curve[:,1] > threshold_p
+    threshold_index = calibrated_age[:,1] > threshold_p
     hpd = list(hpd_curve[threshold_index,0])
     
     confidence_intervals = list()

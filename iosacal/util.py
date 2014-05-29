@@ -30,13 +30,13 @@ def ad_bc_prefix(year, BP):
     else:
         return "BP %d" % year
 
-def interval_to_string(interval, calibrated_curve, BP):
+def interval_to_string(interval, calibrated_age, BP):
     '''Return a string describing the interval with probability percent.'''
 
     # TODO this should be rather a method of the core.ConfidenceInterval
     # object (to be written yet)
 
     i = [ad_bc_prefix(year, BP) for year in interval]
-    percent = hpd.confidence_percent(interval, calibrated_curve) * 100
+    percent = hpd.confidence_percent(interval, calibrated_age) * 100
     #return u' %s ‒ %s (%2.1f %%)\n' % (i[0], i[1], percent)
     return u' %s - %s (%2.1f %%)\n' % (i[0], i[1], percent)

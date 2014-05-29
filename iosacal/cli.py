@@ -118,7 +118,7 @@ def main():
         ca = rs.calibrate(options.curve)
         calibrated_ages.append(ca)
         if options.plot and options.single is True:
-            outputname = '%s_%d±%d.pdf' %(options.name, d, s)
+            outputname = '{}_{:d}±{:d}.pdf'.format(id, d, s)
             plot.single_plot(ca,oxcal=options.oxcal,output=outputname)
         else:
             sys.stdout.write(text.single_text(ca, options.BP))
