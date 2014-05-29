@@ -17,7 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with IOSACal.  If not, see <http://www.gnu.org/licenses/>.
 
-from string import Template
 from iosacal import util
 
 
@@ -64,26 +63,20 @@ def text_dict(calibrated_age, BP=True):
 def single_text(calibrated_age, BP):
     '''Output calibrated age as text to the terminal.'''
 
-    output = Template('''
-============
-IOSACal v0.1
-============
     d = text_dict(calibrated_age, BP)
+    output = '''
+# IOSACal v0.2
 
-Radiocarbon sample
-------------------
+Calibration of {rs_id}: {f_m} ± {sigma_m} BP
 
-$rs_id: $f_m ± $sigma_m BP
+## Calibrated age
 
-Calibrated age
---------------
-
-$calibration_curve_title
+{calibration_curve_title}
 
 68.2% probability
-$intervals68
+{intervals68}
 95.4% probability
-$intervals95
-''')
+{intervals95}
+'''.format(**d)
 
-    return output.substitute(d)
+    return output
