@@ -121,7 +121,7 @@ def main():
             outputname = '%s_%d±%d.pdf' %(options.name, d, s)
             plot.single_plot(ca,oxcal=options.oxcal,output=outputname)
         else:
-            sys.stdout.write(text.single_text(ca))
+            sys.stdout.write(text.single_text(ca, options.BP))
     if options.plot and options.stacked is True:
         plot.stacked_plot(
                         calibrated_ages,

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # filename: text.py
-# Copyright 2009-2010, 2013 Stefano Costa <steko@iosa.it>
+# Copyright 2009-2010, 2013-2014 Stefano Costa <steko@iosa.it>
 #
 # This file is part of IOSACal, the IOSA Radiocarbon Calibration Library.
 
@@ -21,7 +21,7 @@ from string import Template
 from iosacal import util
 
 
-def text_dict(calibrated_age):
+def text_dict(calibrated_age, BP=True):
     '''Return a dictionary with the meaningful pieces of information.
 
     This is useful for the web interface and for other custom output.'''
@@ -34,7 +34,6 @@ def text_dict(calibrated_age):
     calibration_curve_title = calibrated_age.calibration_curve.title
     intervals68 = calibrated_age.intervals68
     intervals95 = calibrated_age.intervals95
-    BP = True
 
     string68 = "".join(
         util.interval_to_string(
@@ -62,14 +61,14 @@ def text_dict(calibrated_age):
     return calibrated_data
 
 
-def single_text(calibrated_age):
+def single_text(calibrated_age, BP):
     '''Output calibrated age as text to the terminal.'''
 
-    d = text_dict(calibrated_age)
     output = Template('''
 ============
 IOSACal v0.1
 ============
+    d = text_dict(calibrated_age, BP)
 
 Radiocarbon sample
 ------------------
