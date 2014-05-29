@@ -319,3 +319,15 @@ def stacked_plot(calibrated_ages,name='Stacked plot',oxcal=False, BP=True, outpu
 
     if output:
         plt.savefig(output)
+
+
+def iplot(calibrated_ages, **kwds):
+    '''A generic function for plotting in the IPython Notebook.'''
+
+    try:
+        # ugly, ugly hack
+        calibrated_ages.intervals68
+    except AttributeError:
+        stacked_plot(calibrated_ages, **kwds)
+    else:
+        single_plot(calibrated_ages, **kwds)
