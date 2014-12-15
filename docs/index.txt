@@ -86,6 +86,7 @@ Site contents
    developers/index
    glossary
    resources
+   whatsnew
    license
 
 
