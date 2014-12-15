@@ -3,27 +3,83 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-A radiocarbon calibration software
-==================================
+Welcome to IOSACal's documentation!
+===================================
 
-IOSACal is the radiocarbon (14C) calibration software of the IOSA_ project. 
-IOSACal includes:
+IOSACal is an open source tool for radiocarbon calibration. It has a
+command-line program and a Python 3 library::
 
-- a programming library
-- a web-based application
-- a command-line program
+  >>> from iosacal import R, combine
+  >>> r = R(790, 60, 'LTL2132A')
+  >>> cal_r = r.calibrate('IntCal13')
+  >>> print(cal_r)
 
-IOSACal is written in the Python programming language and it can run natively
-on any platform where the Python interpreter is available, including all
-GNU/Linux distributions, MacOS X and other UNIX operating systems, and
-Microsoft Windows.
+  Radiocarbon determination
+  -------------------------
 
-Source code is made available under the terms of the GNU General Public
-License.
+  LTL2132A: 790 ± 60 BP
+  
+  Calibrated age
+  --------------
 
-.. _IOSA: http://www.iosa.it/
+  Atmospheric data from Reimer et al (2013);
 
-.. image:: images/image_790-60.png
+  68.2% probability
+    BP 760 - BP 752 (4.8 %)
+    BP 747 - BP 673 (63.3 %)
+
+  95.4% probability
+    BP 902 - BP 864 (4.4 %)
+    BP 827 - BP 813 (1.3 %)
+    BP 801 - BP 652 (89.3 %)
+    BP 577 - BP 573 (0.4 %)
+
+Multiple determinations from the same event can be checked for
+consistency and combined::
+
+  >>> r1 = R(4430, 100, 'Birm-637')
+  >>> r2 = R(4430, 120, 'Birm-638')
+  >>> r3 = R(4400, 100, 'Birm-639')
+  >>> r4 = R(4350, 130, 'Birm-636')
+  >>> r_combined = combine([r1, r2, r3, r4], 'Skara Brae event 1')
+  >>> print(r_combined)
+
+  Combined radiocarbon date for Skara Brae event 1: 4406 ± 55 BP
+  Chi-squared test statistic: 0.287
+
+  >>> r_combined_cal = r_combined.cal('IntCal13')
+  >>> print(r_combined_cal)
+
+  Radiocarbon determination
+  -------------------------
+
+  Skara Brae event 1: 4406 ± 55 BP
+
+  Calibrated age
+  --------------
+
+  Atmospheric data from Reimer et al (2013);
+
+  68.2% probability
+   BP 5210 - BP 5203 (2.1 %)
+   BP 5046 - BP 4870 (65.9 %)
+
+  95.4% probability
+   BP 5279 - BP 5164 (19.0 %)
+   BP 5135 - BP 5105 (3.6 %)
+   BP 5077 - BP 4855 (72.8 %)
+
+See how IOSACal can be `used interactively with IPython Notebook
+<http://nbviewer.ipython.org/gist/steko/60b18bcb87c9202384d9>`_.
+
+Install
+-------
+
+Just::
+
+  pip3 install iosacal
+
+or get the source at https://github.com/iosa/iosacal if you like.
 
 Why another 14C calibration software ?
 --------------------------------------
@@ -42,8 +98,8 @@ Furthermore, writing this software from scratch is an alternative way of
 learning how 14C calibration works, not only in strict mathematical terms,
 but also from a practical point of view.
 
-What can it do ?
-----------------
+Features
+--------
 
 IOSACal takes a radiocarbon determination and outputs a calibrated age as a set
 of probability intervals. A radiocarbon date is represented by a date in years
@@ -67,12 +123,6 @@ IOSACal is based on current calibration methods, like those described in
 .. [RAM2008] C. Bronk Ramsey, Radiocarbon dating: revolutions in
    understanding, Archaeometry 50,2 (2008) pp. 249–275
    http://dx.doi.org/10.1111/j.1475-4754.2008.00394.x
-
-Who should use it ?
--------------------
-
-At this time, only those who like experiments should use it, but anyone is
-welcome to download the code and give us feedback.
 
 Site contents
 -------------
