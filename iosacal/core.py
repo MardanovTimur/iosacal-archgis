@@ -25,7 +25,7 @@ from math import exp, pow, sqrt
 
 import numpy as np
 
-from iosacal.hpd import alsuren_hpd, confidence_percent
+from iosacal.hpd import hpd_interval
 
 
 def calibrate(f_m, sigma_m, f_t, sigma_t):
@@ -138,8 +138,10 @@ class CalAge(np.ndarray):
         # add the new attribute to the created instance
         obj.radiocarbon_sample = radiocarbon_sample
         obj.calibration_curve = calibration_curve
-        obj.intervals68 = alsuren_hpd(obj,0.318)
-        obj.intervals95 = alsuren_hpd(obj,0.046)
+        obj.intervals = {
+            68: hpd_interval(obj,0.318),
+            95: hpd_interval(obj,0.046)
+        }
         # Finally, we must return the newly created object:
         return obj
 

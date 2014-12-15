@@ -24,8 +24,6 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 
-from iosacal import hpd, util
-
 COLORS = {
     'bgcolor': '#e5e4e5',
 }
@@ -37,8 +35,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
     sigma_m = calibrated_age.radiocarbon_sample.sigma
     radiocarbon_sample_id = calibrated_age.radiocarbon_sample.id
     calibration_curve = calibrated_age.calibration_curve
-    intervals68 = calibrated_age.intervals68
-    intervals95 = calibrated_age.intervals95
+    intervals = calibrated_age.intervals
     sample_interval = calibration_curve[:,0].copy() # for determination plot
 
     # adjust plot bounds
@@ -66,16 +63,8 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
     else:
         ad_bp_label = "BP"
 
-    string68 = "".join(
-        util.interval_to_string(
-            itv, calibrated_age, BP
-            ) for itv in intervals68
-        )
-    string95 = "".join(
-        util.interval_to_string(
-            itv, calibrated_age, BP
-            ) for itv in intervals95
-        )
+    string68 = calibrated_age.intervals[68]
+    string95 = calibrated_age.intervals[95]
 
     fig = plt.figure(figsize=(12,8))
     fig.clear()
@@ -167,51 +156,51 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
     # Confidence intervals
 
     if oxcal is True:
-        for i in intervals68:
+        for i in intervals[68]:
             ax1.axvspan(
-                min(i),
-                max(i),
+                i.from_year,
+                i.to_year,
                 ymin=0.05,
                 ymax=0.07,
                 facecolor='none',
                 alpha=0.8)
             ax1.axvspan(
-                min(i),
-                max(i),
+                i.from_year,
+                i.to_year,
                 ymin=0.068,
                 ymax=0.072,
                 facecolor='w',
                 edgecolor='w',
                 lw=2)
-        for i in intervals95:
+        for i in intervals[95]:
             ax1.axvspan(
-                min(i),
-                max(i),
+                i.from_year,
+                i.to_year,
                 ymin=0.025,
                 ymax=0.045,
                 facecolor='none',
                 alpha=0.8)
             ax1.axvspan(
-                min(i),
-                max(i),
+                i.from_year,
+                i.to_year,
                 ymin=0.043,
                 ymax=0.047,
                 facecolor='w',
                 edgecolor='w',
                 lw=2)
     else:
-        for i in intervals68:
+        for i in intervals[68]:
             ax1.axvspan(
-                min(i),
-                max(i),
+                i.from_year,
+                i.to_year,
                 ymin=0,
                 ymax=0.02,
                 facecolor='k',
                 alpha=0.5)
-        for i in intervals95:
+        for i in intervals[95]:
             ax1.axvspan(
-                min(i),
-                max(i),
+                i.from_year,
+                i.to_year,
                 ymin=0,
                 ymax=0.02,
                 facecolor='k',
@@ -240,8 +229,7 @@ def stacked_plot(calibrated_ages,name='Stacked plot',oxcal=False, BP=True, outpu
         radiocarbon_sample_id = calibrated_age.radiocarbon_sample.id
         calibration_curve = calibrated_age.calibration_curve
         calibration_curve_title = calibration_curve.title
-        intervals68 = calibrated_age.intervals68
-        intervals95 = calibrated_age.intervals95
+        intervals = calibrated_age.intervals
         if min_year > min(calibrated_age[:,0]):
             min_year = min(calibrated_age[:,0])
         if max_year < max(calibrated_age[:,0]):
@@ -298,18 +286,18 @@ def stacked_plot(calibrated_ages,name='Stacked plot',oxcal=False, BP=True, outpu
          bbox=dict(facecolor='white', alpha=0.9, lw=0))
 
         # Confidence intervals
-        for i in calibrated_age.intervals95:
+        for i in calibrated_age.intervals[95]:
             ax.axvspan(
-                min(i),
-                max(i),
+                i.from_year,
+                i.to_year,
                 ymin=0.6,
                 ymax=0.7,
                 facecolor='k',
                 alpha=0.4)
-        for i in calibrated_age.intervals68:
+        for i in calibrated_age.intervals[68]:
             ax.axvspan(
-                min(i),
-                max(i),
+                i.from_year,
+                i.to_year,
                 ymin=0.6,
                 ymax=0.7,
                 facecolor='k',
@@ -326,7 +314,7 @@ def iplot(calibrated_ages, **kwds):
 
     try:
         # ugly, ugly hack
-        calibrated_ages.intervals68
+        calibrated_ages.intervals
     except AttributeError:
         stacked_plot(calibrated_ages, **kwds)
     else:

@@ -20,61 +20,22 @@
 from iosacal import util
 
 
-def text_dict(calibrated_age, BP=True):
-    '''Return a dictionary with the meaningful pieces of information.
-
-    This is useful for the web interface and for other custom output.'''
-
-    f_m = calibrated_age.radiocarbon_sample.date
-    sigma_m = calibrated_age.radiocarbon_sample.sigma
-    rs_id = calibrated_age.radiocarbon_sample.id
-    calibration_curve = calibrated_age.calibration_curve
-    intervals68 = calibrated_age.intervals68
-    intervals95 = calibrated_age.intervals95
-
-    string68 = "".join(
-        util.interval_to_string(
-            itv, calibrated_age, BP
-            ) for itv in intervals68
-        )
-    string95 = "".join(
-        util.interval_to_string(
-            itv, calibrated_age, BP
-            ) for itv in intervals95
-        )
-
-    calibrated_data = {
-        'calibrated_age': calibrated_age,
-        'f_m': f_m,
-        'sigma_m': sigma_m,
-        'rs_id': rs_id,
-        'calibration_curve': calibration_curve,
-        'calibration_curve_title': calibration_curve.title,
-        'intervals68': string68,
-        'intervals95': string95,
-        'BP': BP,
-        }
-
-    return calibrated_data
-
-
 def single_text(calibrated_age, BP):
     '''Output calibrated age as text to the terminal.'''
 
-    d = text_dict(calibrated_age, BP)
     output = '''
 # IOSACal v0.2
 
-Calibration of {rs_id}: {f_m} ± {sigma_m} BP
+Calibration of {0.radiocarbon_sample.id}: {0.radiocarbon_sample.date} ± {0.radiocarbon_sample.sigma} BP
 
 ## Calibrated age
 
-{calibration_curve_title}
+{0.calibration_curve.title}
 
 68.2% probability
-{intervals68}
+{0.intervals[68]}
 95.4% probability
-{intervals95}
-'''.format(**d)
+{0.intervals[95]}
+'''.format(calibrated_age)
 
     return output

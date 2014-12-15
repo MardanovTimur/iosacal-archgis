@@ -3,7 +3,7 @@
 # filename: hpd.py
 # Copyright 2008-2009 Stefano Costa <steko@iosa.it>
 # Copyright 2008 David Laban <alsuren@gmail.com>
-# 
+#
 # This file is part of IOSACal, the IOSA Radiocarbon Calibration Library.
 
 # IOSACal is free software: you can redistribute it and/or modify
@@ -19,6 +19,7 @@
 # You should have received a copy of the GNU General Public License
 # along with IOSACal.  If not, see <http://www.gnu.org/licenses/>.
 
+from collections import namedtuple
 from copy import copy
 from numpy import asarray
 
@@ -31,7 +32,7 @@ def findsorted(n, array):
 
 def prev(n, array):
     '''Find interval between n and its previous, inside array.'''
-    
+
     a,i = findsorted(n, array)
     if i-1 < 0:
         prev = None
@@ -41,7 +42,7 @@ def prev(n, array):
 
 def next(n, array):
     '''Find interval between n and its next, inside array.'''
-    
+
     a,i = findsorted(n, array)
     try:
         next = a[i+1]
@@ -57,14 +58,14 @@ def alsuren_hpd(calibrated_age, alpha):
     hpd_cumsum = hpd_sorted[:,1].cumsum()
     # normalised values
     hpd_cumsum /= hpd_cumsum[-1]
-    
+
     threshold_index = hpd_cumsum.searchsorted(1 - alpha)
     threshold_p = hpd_sorted[threshold_index][1]
     threshold_index = calibrated_age[:,1] > threshold_p
     hpd = list(hpd_curve[threshold_index,0])
-    
+
     confidence_intervals = list()
-    
+
     for i in hpd:
         # ^ is the XOR operator
         if (prev(i,hpd_curve[:,0]) not in hpd) ^ (next(i,hpd_curve[:,0]) not in hpd):
@@ -72,19 +73,40 @@ def alsuren_hpd(calibrated_age, alpha):
     return asarray(confidence_intervals).reshape(len(confidence_intervals)/2,2)
 
 
-def confidence_percent(years, array):
+def confidence_percent(years, calibrated_age):
     '''Return HPD as percent value for a given span of years.'''
-    percent_curve = array.copy()
+    percent_curve = calibrated_age.copy()
     percent_curve[:,1] /= percent_curve[:,1].sum()
     percent_sorted = percent_curve[percent_curve[:,0].argsort(),]
-    
+
     year1_index = percent_sorted[:,0].searchsorted([years[0]])
     year2_index = percent_sorted[:,0].searchsorted([years[1]])
     indices = [ percent_sorted[:,0].searchsorted([year]) for year in years ]
     indices.sort()
-    min_year, max_year = indices
-    
+    min_year = indices[0][0]
+    max_year = indices[1][0]
+
     confidence_interval = percent_sorted[min_year:max_year+1,1]
     percent_result = confidence_interval.sum()
-    return percent_result
+    return float(percent_result)
 
+
+class ConfIntv(namedtuple('ConfIntv', ['from_year', 'to_year', 'conf_perc'])):
+        __slots__ = ()
+        def __str__(self):
+            return '{0.from_year:.0f} BP - {0.to_year:.0f} BP ({0.conf_perc:2.1%})'.format(self)
+
+class ConfIntvList(list):
+    def __str__(self):
+            res = '\n'.join(str(ci) for ci in self)
+            return res
+
+def hpd_interval(calibrated_age, alpha):
+    '''Wrapper around other functions, returns a single object.'''
+
+    res = ConfIntvList()
+    intervals = alsuren_hpd(calibrated_age, alpha)
+    for interval in intervals:
+        percent = confidence_percent(interval, calibrated_age)
+        res.append(ConfIntv(interval[0], interval[1], percent))
+    return res
