@@ -1,0 +1,34 @@
+=======================
+ What's new in IOSACal
+=======================
+
+Release news for IOSACal.
+
+Release 0.3 (in development)
+====================
+
+- use ``genfromtxt`` to import calibration curves
+- intervals as a well-defined type
+- extra properties for ``R`` and ``CalAge`` objects (a simple JSON-like dict)
+
+Release 0.2 (current)
+============================
+
+Main highlights:
+
+- new function to combine multiple determinations (Ward & Wilson 1978)
+- a simple and straightforward set of commands to get started
+- amazing interactive mode with IPython Notebook
+- plotting multiple dates in a stacked plot actually works
+- added several older calibration curves (useful to check published data)
+
+On the technical side:
+
+- works with Python 3 only, dropped compatibility with Python 2
+- requires NumPy 1.8 and Matplotlib 1.3
+- calibration curves and calibrated ages are ``ndarray`` objects, super-easy
+  to work with
+
+Known issues:
+
+- AD/BC dates in output are not available, all dates are given as CalBP
