@@ -17,8 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with IOSACal.  If not, see <http://www.gnu.org/licenses/>.
 
-from iosacal import util
-
 
 def single_text(calibrated_age, BP):
     '''Output calibrated age as text to the terminal.'''

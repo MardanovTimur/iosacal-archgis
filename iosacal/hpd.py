@@ -92,14 +92,42 @@ def confidence_percent(years, calibrated_age):
 
 
 class ConfIntv(namedtuple('ConfIntv', ['from_year', 'to_year', 'conf_perc'])):
-        __slots__ = ()
-        def __str__(self):
-            return '{0.from_year:.0f} BP - {0.to_year:.0f} BP ({0.conf_perc:2.1%})'.format(self)
+    __slots__ = ()
+
+    def __format__(self, fmt='bp'):
+
+        def ad_bc_prefix(year, prefixes='ad'):
+            '''Return a string with BC/AD prefix and the given year.'''
+            if prefixes == 'ad':
+                neg, pos = ('BC', 'AD')
+            elif prefixes == 'ce':
+                neg, pos = ('BCE', 'CE')
+            else:
+                neg, pos = prefixes
+            if year < 0:
+                yearf = '{0} {1:.0f}'.format(neg, abs(year))
+            else:
+                yearf = '{0} {1:.0f}'.format(pos, year)
+            return yearf
+
+        fmt = fmt if len(fmt) > 0 else 'bp' # default fmt is ''
+        if fmt == 'bp':
+            f = '{from_year:.0f} CalBP ‒ {to_year:.0f} CalBP ({conf_perc:2.1%})'.format(**self.__dict__)
+        elif fmt == 'ad' or 'ce':
+            ad = {'from_year': ad_bc_prefix(1950 - self.from_year, fmt),
+                  'to_year': ad_bc_prefix(1950 - self.to_year, fmt),
+                  'conf_perc': self.conf_perc}
+            f = '{from_year} ‒ {to_year} ({conf_perc:2.1%})'.format(**ad)
+        return f
+
+    __str__ = __format__
 
 class ConfIntvList(list):
-    def __str__(self):
-            res = '\n'.join(str(ci) for ci in self)
-            return res
+    def __format__(self, fmt):
+        return '\n'.join(ci.__format__(fmt) for ci in self)
+
+    __str__ = __format__
+
 
 def hpd_interval(calibrated_age, alpha):
     '''Wrapper around other functions, returns a single object.'''

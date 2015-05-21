@@ -70,20 +70,21 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
     fig.clear()
     ax1 = plt.subplot(111)
     ax1.set_axis_bgcolor(COLORS['bgcolor'])
-    plt.xlabel("Calibrated age (%s)" % ad_bp_label)
+    plt.xlabel("Calibrated age ({})".format(ad_bp_label))
     plt.ylabel("Radiocarbon determination (BP)")
-    plt.text(0.5, 0.95,r'%s: $%d \pm %d BP$' % (radiocarbon_sample_id, f_m, sigma_m),
+    plt.text(0.5, 0.95,
+         r'{}: {:d} ± {:d} BP'.format(radiocarbon_sample_id, f_m, sigma_m),
          horizontalalignment='center',
          verticalalignment='center',
          transform = ax1.transAxes,
          bbox=dict(facecolor='white', alpha=0.9, lw=0))
-    plt.text(0.75, 0.80,'68.2%% probability\n%s\n95.4%% probability\n%s' \
-                 % (string68, string95),
+    plt.text(0.75, 0.80,
+         '68.2% probability\n{}\n\n95.4% probability\n{}'.format(string68, string95),
          horizontalalignment='left',
          verticalalignment='center',
          transform = ax1.transAxes,
          bbox=dict(facecolor='white', alpha=0.9, lw=0))
-    plt.text(0.0, 1.0,'IOSACal v0.2; %s' % calibration_curve.title,
+    plt.text(0.0, 1.0,'IOSACal v0.2; {}'.format(calibration_curve.title),
          horizontalalignment='left',
          verticalalignment='bottom',
          transform = ax1.transAxes,
@@ -247,7 +248,7 @@ def stacked_plot(calibrated_ages,name='Stacked plot',oxcal=False, BP=True, outpu
 
     numrows = len(calibrated_ages)
     fig, axs = plt.subplots(numrows, 1, sharex=True, figsize=(12, 2*numrows))
-    plt.suptitle("%s" % name )
+    plt.suptitle("{}".format(name))
     axs[0].invert_xaxis() # just once
 
     for n, calibrated_age in enumerate(calibrated_ages):
