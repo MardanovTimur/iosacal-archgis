@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.1'
+version = '0.2'
 
 setup(name='iosacal',
       version=version,
@@ -14,7 +14,7 @@ setup(name='iosacal',
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3 :: Only',
         'Topic :: Scientific/Engineering',
         ],
       keywords='radiocarbon calibration',
