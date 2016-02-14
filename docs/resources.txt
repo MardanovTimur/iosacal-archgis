@@ -40,10 +40,23 @@ Reference websites
 Calibration curves
 ------------------
 
-- `IntCal09 Supplemental Data`_ to get the **calibration curves** in
-  ``.14c`` ASCII format
-- `IntCal04 Supplemental Data`_ are the previous version of the same data
+- `IntCal13 Supplemental Data`_ to get the most recent **calibration
+  curves** in ``.14c`` ASCII format
+- `IntCal09 Supplemental Data`_ is the previous version of the same
+  data
 
+.. _`IntCal13 Supplemental Data`: http://www.radiocarbon.org/IntCal13.htm
 .. _`IntCal09 Supplemental Data`: http://www.radiocarbon.org/IntCal09.htm
-.. _`IntCal04 Supplemental Data`: http://www.radiocarbon.org/IntCal04.htm
 
+Please note that IOSACal already includes the calibration curves listed below:
+
+- *IntCal13*
+- *Marine13*
+- *ShCal13*
+- *IntCal09*
+- *Marine09*
+- *IntCal04*
+- *Marine04*
+- *ShCal04*
+- *IntCal98*
+- *Marine98*
