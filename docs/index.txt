@@ -79,7 +79,7 @@ Just::
 
   pip3 install iosacal
 
-or get the source at https://github.com/iosa/iosacal if you like.
+or get the source at https://gitlab.com/iosa/iosacal if you like.
 
 Why another 14C calibration software ?
 --------------------------------------
