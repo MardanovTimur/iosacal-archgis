@@ -1,6 +1,0 @@
-:mod:`text` -- Text output
-==========================
-
-.. automodule:: iosacal.text
-
-.. autofunction:: single_text

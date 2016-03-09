@@ -7,7 +7,11 @@ Welcome to IOSACal's documentation!
 ===================================
 
 IOSACal is an open source tool for radiocarbon calibration. It has a
-command-line program and a Python 3 library::
+command-line program::
+
+  $ iosacal -d 790 -s 60 --id "LTL2132A"
+
+The same features are available as a Python 3 library::
 
   >>> from iosacal import R, combine
   >>> r = R(790, 60, 'LTL2132A')
@@ -132,18 +136,9 @@ Site contents
    :maxdepth: 1
    
    how
-   users/index
-   developers/index
-   glossary
+   requirements
+   developers
    resources
    whatsnew
    license
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 

@@ -1,8 +1,0 @@
-:mod:`plot` -- Plotting functions
-=================================
-
-.. automodule:: iosacal.plot
-   :synopsis: plotting functions
-
-.. autofunction:: single_plot
-.. autofunction:: multi_plot

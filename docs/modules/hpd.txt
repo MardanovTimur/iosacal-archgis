@@ -1,7 +1,0 @@
-:mod:`hpd` -- Highest Probability Density
-=========================================
-
-.. automodule:: iosacal.hpd
-
-.. autofunction:: alsuren_hpd
-.. autofunction:: confidence_percent
