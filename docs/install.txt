@@ -1,6 +1,6 @@
-================
- Requirements
-================
+==============
+ Installation
+==============
 
 Simple things simple: to run IOSACal you need the following software
 on your computer:
@@ -8,7 +8,7 @@ on your computer:
 - Python_
 - NumPy_
 - Matplotlib_
-- SciPy_ (optional but recommended)
+- SciPy_
 
 All are available for major platforms. Order of installation matters.
 
@@ -25,7 +25,7 @@ Debian/Ubuntu
 
 From a terminal::
 
-  sudo apt-get install python-matplotlib python-scipy
+  sudo apt-get install python3-matplotlib python3-scipy
 
 (this installs also Python, Numpy and all other requirements).
 

@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to IOSACal's documentation!
-===================================
+IOSACal: open source radiocarbon calibration
+============================================
 
 IOSACal is an open source tool for radiocarbon calibration. It has a
 command-line program::
@@ -79,11 +79,13 @@ See how IOSACal can be `used interactively with IPython Notebook
 Install
 -------
 
-Just::
+If you have Python 3 just::
 
   pip3 install iosacal
 
-or get the source at https://gitlab.com/iosa/iosacal if you like.
+or get the source at https://gitlab.com/iosa/iosacal.
+
+If none of the above makes sense, follow the :doc:`install` instructions.
 
 Why another 14C calibration software ?
 --------------------------------------
@@ -136,7 +138,7 @@ Site contents
    :maxdepth: 1
    
    how
-   requirements
+   install
    developers
    resources
    whatsnew
