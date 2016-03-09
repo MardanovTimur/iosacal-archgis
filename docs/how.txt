@@ -12,14 +12,14 @@ of probability intervals.
 Download
 --------
 
-As a software, IOSACal is still in its infancy. The 0.1 version will be
-released soon, but in the meantime you can get the development version from
-bitbucket_, either with the `complete project history`_ or as a simple `source
-archive`_.
+As a software, IOSACal is still in alpha stage. The 0.2 version was
+released in 2015: you can always get the *development version* from the
+`git repository`_, either with the `complete project history`_ or
+download the latest *released version* as a simple `source archive`_.
 
-.. _bitbucket: http://bitbucket.org/iosa/iosacal/
-.. _`complete project history`: http://bitbucket.org/iosa/iosacal/overview/
-.. _`source archive`: http://bitbucket.org/iosa/iosacal/get/tip.bz2
+.. _`git repository`: https://gitlab.com/iosa/iosacal/
+.. _`complete project history`: https://gitlab.com/iosa/iosacal/commits/master
+.. _`source archive`: https://gitlab.com/iosa/iosacal/repository/archive.zip?ref=v0.2
 
 Installing
 ----------
@@ -31,8 +31,8 @@ Just extract the downloaded archive, move to the main directory and::
 from the main directory. Using pip_ and virtualenv_ is strongly
 recommended.
 
-.. _pip: http://pip.openplans.org/
-.. _virtualenv: http://pypi.python.org/pypi/virtualenv
+.. _pip: https://pip.pypa.io/
+.. _virtualenv: https://virtualenv.pypa.io/
 
 After the install has completed, the ``iosacal`` binary will be available.
 

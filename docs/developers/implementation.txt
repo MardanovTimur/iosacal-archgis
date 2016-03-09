@@ -16,11 +16,11 @@ Installing the above packages is **needed** in order to run IOSACal on
 your computer. SciPy is optional but highly recommended: without it
 interpolation will be unavailable.
 
-Development happens at GitHub_:
+Development happens in a public git repository at GitLab_:
 
 .. _Python: http://www.python.org/
 .. _NumPy: http://numpy.scipy.org/
-.. _Matplotlib: http://matplotlib.sourceforge.net/
+.. _Matplotlib: http://www.matplotlib.org/
 .. _SciPy: http://www.scipy.org/
 .. _`interpolate.interp1d`: http://docs.scipy.org/doc/scipy/reference/tutorial/interpolate.html
-.. _GitHub: https://github.com/iosa/iosacal
+.. _GitLab: https://gitlab.com/iosa/iosacal
