@@ -1,4 +1,3 @@
-
 C14 and calibration resources
 =============================
 
@@ -9,12 +8,13 @@ software.
 Other software
 --------------
 
-- OxCal_ is developed by the RLAHA at Oxford
+- OxCal_ is developed by the Oxford Radiocarbon Accelerator Unit: it's
+  by far the most used calibration program
 - CALIB_ is a radiocarbon calibration program. A command-line Linux
   version is available (non-free software, but works well)
 - BCal_ is an on-line Bayesian radiocarbon calibration tool hosted by
   the Department of Probability and Statistics at the University of
-  Sheffield.
+  Sheffield
 
 .. _OxCal: http://c14.arch.ox.ac.uk/embed.php?File=oxcal.html
 .. _CALIB: http://calib.qub.ac.uk/calib/
@@ -40,6 +40,9 @@ Reference websites
 Calibration curves
 ------------------
 
+Calibration curves are released in the public domain and can be
+downloaded in their native format, a slightly customised CSV:
+
 - `IntCal13 Supplemental Data`_ to get the most recent **calibration
   curves** in ``.14c`` ASCII format
 - `IntCal09 Supplemental Data`_ is the previous version of the same
@@ -60,3 +63,22 @@ Please note that IOSACal already includes the calibration curves listed below:
 - *ShCal04*
 - *IntCal98*
 - *Marine98*
+
+Older calibration curves are useful to reproduce calibration results
+found in published literature.
+
+Radiocarbon databases
+---------------------
+
+There are a few databases of radiocarbon dates that are available as
+**open data**, and can be easily downloaded as CSV files for further processing.
+
+- `EUROEVOL <http://openarchaeologydata.metajnl.com/articles/10.5334/joad.40/>`_
+- `Mediterranean radiocarbon dates <http://crowdsourced.micropasts.org/project/MedRadiocarbon/>`_
+
+Both databases are useful to experiment with many dates and apart from
+their specific research aims and spatio-temporal coordinates, they are
+incredibly useful as a learning resource.
+
+Other databases are usually released under restrictive license terms
+or unavailable to the public.
