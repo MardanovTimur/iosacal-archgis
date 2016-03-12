@@ -17,12 +17,18 @@
 # You should have received a copy of the GNU General Public License
 # along with IOSACal.  If not, see <http://www.gnu.org/licenses/>.
 
+from textwrap import indent
 
 def single_text(calibrated_age, BP):
-    '''Output calibrated age as text to the terminal.'''
+    '''Output calibrated age as simple Markdown text to the terminal.'''
+
+    # works well but it changes the ConfIntvList objects, not good:
+    # perhaps copy() the calibrated_age object ?
+    for a, i in calibrated_age.intervals.items():
+        calibrated_age.intervals[a] = indent('{:{fmt}}'.format(i, fmt=BP), '* ')
 
     output = '''
-# IOSACal v0.2
+# {0.radiocarbon_sample.id}
 
 Calibration of {0.radiocarbon_sample.id}: {0.radiocarbon_sample.date} ± {0.radiocarbon_sample.sigma} BP
 
@@ -30,10 +36,18 @@ Calibration of {0.radiocarbon_sample.id}: {0.radiocarbon_sample.date} ± {0.radi
 
 {0.calibration_curve.title}
 
-68.2% probability
+### 68.2% probability
+
 {0.intervals[68]}
-95.4% probability
+
+### 95.4% probability
+
 {0.intervals[95]}
+
+----
+
+IOSACal v0.2
+
 '''.format(calibrated_age)
 
     return output
