@@ -19,7 +19,7 @@
 
 from textwrap import indent
 
-def single_text(calibrated_age, BP):
+def single_text(calibrated_age, BP='bp'):
     '''Output calibrated age as simple Markdown text to the terminal.'''
 
     # works well but it changes the ConfIntvList objects, not good:
