@@ -15,7 +15,7 @@ which also creates nice plots like this::
 
   $ iosacal -d 7505 -s 93 --id "P-769" -p
 
-.. image:: /images/P-769_7505±93.png
+.. image:: /images/P-769_7505_93.png
 
 The same features are available as a Python 3 library::
 
