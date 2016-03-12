@@ -28,7 +28,7 @@ COLORS = {
     'bgcolor': '#e5e4e5',
 }
 
-def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
+def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
 
     calibrated_age = calibrated_age
     f_m = calibrated_age.radiocarbon_sample.date
@@ -53,7 +53,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
     cutmax = cutmin[cutmin[:,0]<max_x]
     calibration_curve = cutmax
 
-    if BP is False:
+    if BP != 'bp':
         if min_year < 0 and max_year > 0:
             ad_bp_label = "BC/AD"
         elif min_year < 0 and max_year < 0:
@@ -63,8 +63,8 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
     else:
         ad_bp_label = "BP"
 
-    string68 = calibrated_age.intervals[68]
-    string95 = calibrated_age.intervals[95]
+    string68 = '{:{fmt}}'.format(calibrated_age.intervals[68], fmt=BP)
+    string95 = '{:{fmt}}'.format(calibrated_age.intervals[95], fmt=BP)
 
     fig = plt.figure(figsize=(12,8))
     fig.clear()
@@ -73,7 +73,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
     plt.xlabel("Calibrated age ({})".format(ad_bp_label))
     plt.ylabel("Radiocarbon determination (BP)")
     plt.text(0.5, 0.95,
-         r'{}: {:d} ± {:d} BP'.format(radiocarbon_sample_id, f_m, sigma_m),
+         r'{}: {:.0f} ± {:.0f} BP'.format(radiocarbon_sample_id, f_m, sigma_m),
          horizontalalignment='center',
          verticalalignment='center',
          transform = ax1.transAxes,
@@ -94,6 +94,15 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
     # Calendar Age
 
     ax2 = plt.twinx()
+
+    # works only for the calibrated_age plot, the calibration curve and
+    # confidence intervals are already calculated - it's probably better to
+    # manipulate only the plot axis
+    if BP != 'bp':
+        calibrated_age.calibration_curve[:,0] *= -1
+        calibrated_age.calibration_curve[:,0] += 1950
+        calibrated_age[:,0] *= -1
+        calibrated_age[:,0] += 1950
 
     if oxcal is True:
         # imitate OxCal
@@ -152,7 +161,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
                                mlab_low,
                                mlab_high)
     ax1.fill(xs, ys, fc='#000000', ec='none', alpha=0.15)
-    ax1.plot(calibration_curve[:,0], calibration_curve[:,1], '#000000', alpha=0.5)
+    ax1.plot(calibration_curve[:,0], calibration_curve[:,1], COLORS['bgcolor'])
 
     # Confidence intervals
 
@@ -211,13 +220,14 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP=True):
     # drawn from the f_m value itself, while preserving their ratio
     ax1.set_ybound(f_m - sigma_m * 15, f_m + sigma_m * 5)
     ax1.set_xbound(min(calibrated_age[:,0]),max(calibrated_age[:,0]))
-    ax1.invert_xaxis()          # if BP == True
+    if BP == 'bp':
+        ax1.invert_xaxis()
 
     if output:
         plt.savefig(output)
 
 
-def stacked_plot(calibrated_ages,name='Stacked plot',oxcal=False, BP=True, output=None):
+def stacked_plot(calibrated_ages,name='Stacked plot',oxcal=False, BP='bp', output=None):
     '''Plot multiple calibrated ages, vertically stacked.
 
     ``calibrated_ages`` is an iterable of CalAge objects.'''
@@ -236,7 +246,7 @@ def stacked_plot(calibrated_ages,name='Stacked plot',oxcal=False, BP=True, outpu
         if max_year < max(calibrated_age[:,0]):
             max_year = max(calibrated_age[:,0])
 
-    if BP is False:
+    if BP != 'bp':
         if min_year < 0 and max_year > 0:
             ad_bp_label = "BC/AD"
         elif min_year < 0 and max_year < 0:
@@ -249,10 +259,10 @@ def stacked_plot(calibrated_ages,name='Stacked plot',oxcal=False, BP=True, outpu
     numrows = len(calibrated_ages)
     fig, axs = plt.subplots(numrows, 1, sharex=True, figsize=(12, 2*numrows))
     plt.suptitle("{}".format(name))
-    axs[0].invert_xaxis() # just once
+    if BP == 'bp':
+        axs[0].invert_xaxis() # just once, because the axis is shared
 
     for n, calibrated_age in enumerate(calibrated_ages):
-        # fignum = 1 + n
         ax = axs[n]
 
         # Calendar Age
@@ -303,8 +313,12 @@ def stacked_plot(calibrated_ages,name='Stacked plot',oxcal=False, BP=True, outpu
                 ymax=0.7,
                 facecolor='k',
                 alpha=1.0)
-        # if fignum == numrows:
-        #     plt.xlabel("Calibrated date (%s)" % ad_bp_label, y = 0.05)
+        if n + 1 == numrows:
+            if BP != 'bp':
+                plt.xlabel("Calibrated age ({})".format(ad_bp_label), y = 0.05) # out of plot boundaries :(
+            else:
+                plt.xlabel("Calibrated age (BP)", y = 0.05)
+
 
     if output:
         plt.savefig(output)

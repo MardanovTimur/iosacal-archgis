@@ -88,15 +88,22 @@ parser.add_option_group(group0)
 group = OptionGroup(parser, 'BP or BC/AD output',
                     'Use these two mutually exclusive options to choose which '
                     ' type of dates you like as output.')
-parser.set_defaults(BP=True)
+parser.set_defaults(BP='bp')
 group.add_option("--bp",
-                action="store_true",
+                action="store_const",
                 dest="BP",
+                const='bp',
                 help="express date in Calibrated BP Age (default action)")
 group.add_option("--ad",
-                action="store_false",
+                action="store_const",
                 dest="BP",
+                const='ad',
                 help="express date in Calibrated BC/AD Calendar Age")
+group.add_option("--ce",
+                action="store_const",
+                dest="BP",
+                const='ce',
+                help="express date in Calibrated BCE/CE Calendar Age")
 parser.add_option_group(group)
 
 (options, args) = parser.parse_args()
@@ -119,7 +126,7 @@ def main():
         calibrated_ages.append(ca)
         if options.plot and options.single is True:
             outputname = '{}_{:d}±{:d}.pdf'.format(id, d, s)
-            plot.single_plot(ca,oxcal=options.oxcal,output=outputname)
+            plot.single_plot(ca, oxcal=options.oxcal, output=outputname, BP=options.BP)
         else:
             sys.stdout.write(text.single_text(ca, options.BP))
     if options.plot and options.stacked is True:
