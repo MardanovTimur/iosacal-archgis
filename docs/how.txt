@@ -192,6 +192,6 @@ you like as output.
 
    Express date in Calibrated BC/AD calendar Age
 
- .. cmdoption:: --ce
+.. cmdoption:: --ce
 
-    Express date in Calibrated BCE/CE calendar Age
+   Express date in Calibrated BCE/CE calendar Age
