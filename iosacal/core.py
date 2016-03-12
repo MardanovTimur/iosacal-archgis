@@ -54,14 +54,11 @@ class CalibrationCurve(np.ndarray):
 
     '''
 
-    def __new__(cls, calibration_string):
-        _lines = calibration_string.splitlines()
-        _data = [ l for l in _lines if not '#' in l ]
-        _dlist = list(reader(_data, skipinitialspace=True))
-        # force calibration curve values as floats
-        _darray = np.asarray(_dlist, dtype='d')
+    def __new__(cls, curve_filename):
+        title = open(curve_filename, encoding='latin-1').readline().strip('#\n')
+        _genfrom = np.genfromtxt(curve_filename, delimiter=',')
         # linear interpolation
-        ud_curve = np.flipud(_darray)  # the sequence must be *increasing*
+        ud_curve = np.flipud(_genfrom)  # the sequence must be *increasing*
         curve_arange = np.arange(ud_curve[0,0],ud_curve[-1,0],1)
         values_interp = np.interp(curve_arange, ud_curve[:,0], ud_curve[:,1])
         stderr_interp = np.interp(curve_arange, ud_curve[:,0], ud_curve[:,2])
@@ -70,7 +67,7 @@ class CalibrationCurve(np.ndarray):
         # We cast _darray to be our class type
         obj = np.asarray(_darray).view(cls)
         # add the new attribute to the created instance
-        obj.title = _lines[0].strip('#\n')
+        obj.title = title
         # Finally, we must return the newly created object:
         return obj
 
@@ -95,9 +92,8 @@ class RadiocarbonDetermination(object):
         '''Perform calibration, given a calibration curve.'''
 
         if not isinstance(curve, CalibrationCurve):
-            curve_data_bytes = pkg_resources.resource_string("iosacal", "data/%s.14c" % curve)
-            curve_data_string = curve_data_bytes.decode('latin1')
-            curve = CalibrationCurve(curve_data_string)
+            curve_filename = pkg_resources.resource_filename("iosacal", "data/%s.14c" % curve)
+            curve = CalibrationCurve(curve_filename)
 
         _calibrated_list = []
         for i in curve:

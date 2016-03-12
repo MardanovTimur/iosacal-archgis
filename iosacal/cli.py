@@ -116,9 +116,8 @@ def main():
     By default produces text output to stdout for each sample."""
 
     # resource_string actually returns bytes
-    curve_data_bytes = pkg_resources.resource_string("iosacal", "data/%s.14c" % options.curve)
-    curve_data_string = curve_data_bytes.decode('latin1')
-    curve = core.CalibrationCurve(curve_data_string)
+    curve_filename = pkg_resources.resource_filename("iosacal", "data/%s.14c" % options.curve)
+    curve = core.CalibrationCurve(curve_filename)
     calibrated_ages = []
     for d, s, id in zip(options.date, options.sigma, options.id):
         rs = core.R(d, s, id)
