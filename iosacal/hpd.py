@@ -102,8 +102,6 @@ class ConfIntv(namedtuple('ConfIntv', ['from_year', 'to_year', 'conf_perc'])):
                 neg, pos = ('BC', 'AD')
             elif prefixes == 'ce':
                 neg, pos = ('BCE', 'CE')
-            else:
-                neg, pos = prefixes
             if year < 0:
                 yearf = '{0} {1:.0f}'.format(neg, abs(year))
             else:
