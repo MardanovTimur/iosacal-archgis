@@ -164,6 +164,8 @@ class CalAge(np.ndarray):
         calendarray[:,0] += 1950
         return calendarray
 
+    def __str__(self):
+        return 'CalAge( {radiocarbon_sample.id} based on "{calibration_curve.title}" )'.format(**self.__dict__)
 
 def combine(determinations):
     '''Combine n>1 determinations related to the same event.
