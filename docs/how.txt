@@ -9,32 +9,115 @@ production use), but has already all the basic functionality, like
 calibration, generation of publication-quality plots and determination
 of probability intervals.
 
-Download
---------
+Basic usage
+-----------
 
-As a software, IOSACal is still in alpha stage. The 0.2 version was
-released in 2015: you can always get the *development version* from the
-`git repository`_, either with the `complete project history`_ or
-download the latest *released version* as a simple `source archive`_.
+The command line program is called ``iosacal``. It can generate both
+text output and image plots.
 
-.. _`git repository`: https://gitlab.com/iosa/iosacal/
-.. _`complete project history`: https://gitlab.com/iosa/iosacal/commits/master
-.. _`source archive`: https://gitlab.com/iosa/iosacal/repository/archive.zip?ref=v0.2
+The typical usage is::
 
-Installing
-----------
+    $ iosacal -d 7505 -s 93 --id "P-769"
 
-Just extract the downloaded archive, move to the main directory and::
+Output will look like the following:
 
-     python setup.py install
+::
 
-from the main directory. Using pip_ and virtualenv_ is strongly
-recommended.
+  # P-769
 
-.. _pip: https://pip.pypa.io/
-.. _virtualenv: https://virtualenv.pypa.io/
+  Calibration of P-769: 7505 ± 93 BP
 
-After the install has completed, the ``iosacal`` binary will be available.
+  ## Calibrated age
+
+  Atmospheric data from Reimer et al (2013);
+
+  ### 68.2% probability
+
+  * 8392 CalBP ‒ 8284 CalBP (45.6%)
+  * 8264 CalBP ‒ 8205 CalBP (22.3%)
+
+  ### 95.4% probability
+
+  * 8516 CalBP ‒ 8493 CalBP (1.1%)
+  * 8480 CalBP ‒ 8157 CalBP (92.7%)
+  * 8115 CalBP ‒ 8114 CalBP (0.1%)
+  * 8089 CalBP ‒ 8058 CalBP (1.5%)
+
+  ----
+
+  IOSACal v0.2
+
+
+If you want an image instead of text output, just add the ``-p`` flag::
+
+    $ iosacal -d 7505 -s 93 --id "P-769" -p
+
+The result will be saved into the image file named
+``P-769_7505±93.pdf`` in the same directory. It will look more or less
+like this:
+
+.. image:: /images/P-769_7505±93.png
+
+Other calibration curves
+------------------------
+
+By default, ``iosacal`` uses the *IntCal13* calibration curve. IOSACal
+is however able to read *any* calibration curve that uses the same
+format as ``intcal13.14c``, like those available on
+<http://www.radiocarbon.org/>. If you want to specify a different
+calibration curve provide the canonical name of the curve in lower case
+(e.g. ``intcal09``, ``marine09``).
+
+To specify a calibration curve, use the ``-c`` command line option::
+
+    $ iosacal -d 7505 -s 93 --id "P-769" -p -c intcal04
+
+Please note that IOSACal already includes the calibration curves listed below:
+
+- *IntCal13*
+- *Marine13*
+- *ShCal13*
+- *IntCal09*
+- *Marine09*
+- *IntCal04*
+- *Marine04*
+- *ShCal04*
+- *IntCal98*
+- *Marine98*
+
+Multiple dates
+--------------
+
+It is also possible to give IOSACal more than one radiocarbon determination,
+to see how 2 or more samples relate between themselves.
+
+To use the multiple dates feature, just pass multiple ``-d``, ``-s`` and
+``--id`` options on the command line::
+
+    $ iosacal \
+      -d 7729 -s 80 --id "P-1365" \
+      -d 7661 -s 99 --id "P-1375" \
+      -d 7579 -s 86 --id "P-827" \
+      -d 7572 -s 92 --id "P-772" \
+      -d 7538 -s 89 --id "P-778" \
+      -d 7505 -s 93 --id "P-769" \
+      -p -m -n "Catalhöyük East level VI A"
+
+The order in which values are passed to IOSACal matters, so the first
+date will be matched to the first standard deviation and so on.
+
+This way, you will get 6 different single plots. The ``-m`` flag is used to
+indicate you want a **compound plot**. It's also useful to use the ``-n`` option
+to give a name to the image and a title to the plot.
+
+The resulting compound plot looks like this:
+
+.. image:: /images/catalhuyuk-level6a.png
+
+.. warning::
+
+   Currently IOSACal doesn't perform any Bayesian matching of
+   calibrated ages. This feature will be added in future versions.
 
 Command line options
 --------------------
@@ -43,39 +126,62 @@ IOSACal works from the command line. These are the available options.
 
 .. program:: iosacal
 
-.. cmdoption:: -h 
+.. cmdoption:: -h
 
    Show an help message and exit
 
 .. cmdoption:: -d <date>, --date=<date>
 
-   Non-calibrated radiocarbon BP date for the sample
+   Conventional radiocarbon age, i.e. the non-calibrated radiocarbon
+   BP date for the sample
 
 .. cmdoption:: -s <sigma>, --sigma=<sigma>
 
-   Standard deviation for the non-calibrated date given with the
-   above option
+   Error at 1 standard deviation for the non-calibrated date given
+   with the above option.
+
+.. cmdoption:: --id <sample_id>
+
+   Lab ID of the sample, e.g. *P-1244*, *OxA-3311* or *BETA-248559*
 
 .. cmdoption:: -c <curve>, --curve=<curve>
 
-   Calibration curve to be used [default: ``intcal09``]
+   Calibration curve to be used [default: ``intcal13``]
 
    If you want to specify a different calibration curve provide the
-   curve canonical name in lower case (e.g. ``intcal09``, ``marine09``).
+   curve canonical name in lower case (e.g. ``intcal09``, ``marine13``).
 
-.. cmdoption:: -i, --interpolate
+Plot output
+~~~~~~~~~~~
 
-   Interpolate calibration curve to obtain fine-grained dating
-   intervals [default: False]
+.. cmdoption:: -p, --plot
 
-.. cmdoption:: -n <name>, --name=<name>
+   Enables the graphical plot output.
 
-   Name of sample, used also for output image [default: iosacal]
+.. cmdoption:: -o, --oxcal
+
+   Plots will be more similar to OxCal [default: False]
+
+.. cmdoption:: -n <name>, --name <name>
+
+   Specify a name for the output plot [default: "iosacal"]
+
+.. cmdoption:: -1, --single
+
+   Generate single plots for each sample. The default action.
+
+.. cmdoption:: --no-single
+
+   Don't generate single plots for each sample.
+
+.. cmdoption:: -m, --stacked
+
+   Generate stacked plot with all samples.
 
 BP or BC/AD dates
 ~~~~~~~~~~~~~~~~~
 
-Use these two mutually exclusive options to choose which type of dates
+Use these mutually exclusive options to choose which type of dates
 you like as output.
 
 .. cmdoption:: --bp
@@ -85,162 +191,3 @@ you like as output.
 .. cmdoption:: --ad
 
    Express date in Calibrated BC/AD Calendar Age
-
-Plotting options
-~~~~~~~~~~~~~~~~
-
-.. cmdoption:: -p, --plot
-
-   Create one or more plots (see `Single and multiple plots`_) instead
-   of the text output.
-
-.. cmdoption:: -o, --oxcal
-
-   Draw plots more OxCal-like looking [default: False]
-
-
-Single and multiple plots
-+++++++++++++++++++++++++
-
-Use these two options when more than 1 sample is supplied to choose
-which output is generated.
-
-.. cmdoption:: -1, --single
-
-   Generate single plots for each sample (default)
-
-.. cmdoption:: --no-single
-
-   Don't generate single plots for each sample
-
-.. cmdoption:: -m, --multiple
-
-   Generate compound plot with all samples
-
-
-Basic usage
------------
-
-The command line program is called ``iosacal``. It can generate both
-text output and image plots.
-
-The typical usage is::
-
-    iosacal -d 790 -s 60
-
-Output will look like the following:
-
-.. highlight:: rest
-
-::
-
-   ==============
-    IOSACal v0.1
-   ==============
-
-   Atmospheric data from Reimer et al (2009);
-
-   Radiocarbon determination (BP): 790 ± 60 BP
-
-   Calibrated date
-   ---------------
-
-   68.2% probability
-    BP 760 ‒ BP 755 (5.2 %)
-    BP 740 ‒ BP 675 (61.2 %)
-
-   95.4% probability
-    BP 900 ‒ BP 865 (4.6 %)
-    BP 825 ‒ BP 815 (1.4 %)
-    BP 800 ‒ BP 655 (88.9 %)
-
-
-If you want an image instead of text output, just add the ``-p`` flag::
-
-    iosacal -d 790 -s 60 -p
-
-The result will be saved into the image file named
-``iosacal_790±60.pdf`` in the same directory. It will look more or less
-like this:
-
-.. image:: /images/image_790-60.png
-
-Other calibration curves
-------------------------
-
-By default, ``iosacal`` uses the *IntCal09* calibration curve. IOSACal
-is however able to read *any* calibration curve that uses the same
-format as ``intcal09.14c``, like those available on
-<http://www.radiocarbon.org/>. If you want to specify a different
-calibration curve provide the curve canonical name in lower case
-(e.g. ``intcal09``, ``marine09``).
-
-To specify a calibration curve, use the ``-c`` command line option::
-
-    iosacal -d 790 -s 60 -p -c marine09
-
-
-.. todo::
-
-   Rewrite this section about other calibration curves once we have
-   received authorization to distribute calibration data files.
-
-
-Interpolation
--------------
-
-The standard *IntCal09* calibration curve has a varying resolution: data
-spacing changes from 5 years for the range from 0 to 11.2 to cal kBP, 10 yrs
-for 11.2–15 cal kBP, 20 yrs for 15–25 cal kBP, 50 yrs for 25–40 cal kBP, and
-100 yrs for 40–50 cal kBP [REI2009]_.
-
-This means that the output intervals will follow these limitations. It's
-possible to use linear interpolation to get more fine-grained results,
-particularly concerning probability intervals.
-
-Use the ``-i`` flag to activate interpolation::
-
-    iosacal -d 790 -s 60 -p --ad -i
-
-IOSACal makes use of the **SciPy** library for interpolating calibration curves.
-Even if SciPy is not required for IOSACal's normal usage and interpolation is
-disabled by default, installing SciPy is recommended.
-
-.. [REI2009] Reimer PJ, Baillie MGL, Bard E, Bayliss A, Beck JW, Blackwell PG,
-   Bronk Ramsey C, Buck CE, Burr GS, Edwards RL, Friedrich M, Grootes PM,
-   Guilderson TP, Hajdas I, Heaton TJ, Hogg AG, Hughen KA, Kaiser KF, Kromer B,
-   McCormac FG, Manning SW, Reimer RW, Richards DA, Southon JR, Talamo S,
-   Turney CSM, van der Plicht J, Weyhenmeyer CE. 2009. IntCal09 and Marine09
-   radiocarbon age calibration curves, 0–50,000 years cal BP. Radiocarbon
-   51(4):1111–50.
-
-Multiple dates
---------------
-
-It is also possible to give IOSACal more than one radiocarbon determination,
-to see how 2 or more samples relate between themselves.
-
-.. warning::
-
-   Currently IOSACal doesn't perform any Bayesian matching of
-   calibrated ages. This feature will be added in future versions.
-
-To use the multiple dates feature, just pass more ``-d`` and ``-s`` options
-on the command line::
-
-    iosacal -d 790 -s 60 -d 917 -s 55 -d 1005 -s 45 -p
-
-The order in which values are passed to IOSACal matters, so the first
-date will be matched to the first standard deviation and so on.
-
-This way, you will get 3 different single plots. If you want to obtain
-also a compound plot, add the ``-m`` flag::
-
-    iosacal -d 790 -s 60 -d 917 -s 55 -d 1005 -s 45 -p -m
-
-It's also useful to use the ``-n`` option to give a name to the image, and
-also a title to the plot::
-
-    iosacal -d 790 -s 60 -d 917 -s 55 -d 1005 -s 45 -p -m -n "Donetta"
-
-.. image:: /images/image_Donetta.png

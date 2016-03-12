@@ -2,25 +2,43 @@
  Implementation
 ================
 
-IOSACal is written in Python_ 3, and it makes heavy use of the NumPy_
-library for the internal management of calibration curves and
-calibrated samples. Calibration curves, radiocarbon dates and
-calibrated curves are handled internally as ``ndarray`` objects,
-making it ridiculously easy to manipulate and plot them.
+IOSACal is written in Python_ 3, and it makes heavy use of the NumPy_ library
+for the internal management of calibration curves and calibrated samples.
+Calibration curves, radiocarbon dates and calibrated curves are handled
+internally as ``ndarray`` objects. ``ndarray`` objects are matrices that can be
+easily manipulated through slicing, flipping, summing and other typical
+operations.
 
 Generation of plots is done through Matplotlib_, another Python
-library built on top of NumPy. The optional interpolation is done through
-the SciPy_ `interpolate.interp1d`_ method.
+library built on top of NumPy. Matplotlib can natively read
+``ndarray`` objects and plot them in a graphical form. Far from being
+just a set of plotting functions, Matplotlib allows the drawing of
+complex plots like those created by IOSACal.
 
-Installing the above packages is **needed** in order to run IOSACal on
-your computer. SciPy is optional but highly recommended: without it
-interpolation will be unavailable.
-
-Development happens in a public git repository at GitLab_:
+Development happens in a public git repository at GitLab_.
 
 .. _Python: http://www.python.org/
 .. _NumPy: http://numpy.scipy.org/
 .. _Matplotlib: http://www.matplotlib.org/
-.. _SciPy: http://www.scipy.org/
-.. _`interpolate.interp1d`: http://docs.scipy.org/doc/scipy/reference/tutorial/interpolate.html
 .. _GitLab: https://gitlab.com/iosa/iosacal
+
+Interpolation
+-------------
+
+The *IntCal09* calibration curve has a varying resolution: data
+spacing changes from 5 years for the range from 0 to 11.2 to cal kBP, 10 yrs
+for 11.2–15 cal kBP, 20 yrs for 15–25 cal kBP, 50 yrs for 25–40 cal kBP, and
+100 yrs for 40–50 cal kBP [REI2009]_. Other curves follow a similar pattern.
+
+This means that the output intervals would follow these limitations. IOSACal
+uses the `interp` function of *NumPy* to perform linear interpolation of the
+calibration curves and obtain more fine-grained results, particularly concerning
+probability intervals.
+
+.. [REI2009] Reimer PJ, Baillie MGL, Bard E, Bayliss A, Beck JW, Blackwell PG,
+   Bronk Ramsey C, Buck CE, Burr GS, Edwards RL, Friedrich M, Grootes PM,
+   Guilderson TP, Hajdas I, Heaton TJ, Hogg AG, Hughen KA, Kaiser KF, Kromer B,
+   McCormac FG, Manning SW, Reimer RW, Richards DA, Southon JR, Talamo S,
+   Turney CSM, van der Plicht J, Weyhenmeyer CE. 2009. IntCal09 and Marine09
+   radiocarbon age calibration curves, 0–50,000 years cal BP. Radiocarbon
+   51(4):1111–50.

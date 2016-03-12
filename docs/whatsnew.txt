@@ -10,6 +10,7 @@ Release 0.3 (in development)
 - use ``genfromtxt`` to import calibration curves
 - intervals as a well-defined type
 - extra properties for ``R`` and ``CalAge`` objects (a simple JSON-like dict)
+- improved documentation
 
 Release 0.2 (current)
 =====================

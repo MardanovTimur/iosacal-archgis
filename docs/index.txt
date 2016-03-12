@@ -9,72 +9,89 @@ IOSACal: open source radiocarbon calibration
 IOSACal is an open source tool for radiocarbon calibration. It has a
 command-line program::
 
-  $ iosacal -d 790 -s 60 --id "LTL2132A"
+  $ iosacal -d 7505 -s 93 --id "P-769"
+
+which also creates nice plots like this::
+
+  $ iosacal -d 7505 -s 93 --id "P-769" -p
+
+.. image:: /images/P-769_7505±93.png
 
 The same features are available as a Python 3 library::
 
-  >>> from iosacal import R, combine
-  >>> r = R(790, 60, 'LTL2132A')
-  >>> cal_r = r.calibrate('IntCal13')
-  >>> print(cal_r)
+  >>> from iosacal import R
+  >>> from iosacal.text import single_text
+  >>> r = R(7505, 93, 'P-769')
+  >>> cal_r = r.calibrate('intcal13')
+  >>> single_text(cal_r)
 
-  Radiocarbon determination
-  -------------------------
+  # P-769
 
-  LTL2132A: 790 ± 60 BP
-  
-  Calibrated age
-  --------------
+  Calibration of P-769: 7505 ± 93 BP
+
+  ## Calibrated age
 
   Atmospheric data from Reimer et al (2013);
 
-  68.2% probability
-    BP 760 - BP 752 (4.8 %)
-    BP 747 - BP 673 (63.3 %)
+  ### 68.2% probability
 
-  95.4% probability
-    BP 902 - BP 864 (4.4 %)
-    BP 827 - BP 813 (1.3 %)
-    BP 801 - BP 652 (89.3 %)
-    BP 577 - BP 573 (0.4 %)
+  * 8392 CalBP ‒ 8284 CalBP (45.6%)
+  * 8264 CalBP ‒ 8205 CalBP (22.3%)
+
+  ### 95.4% probability
+
+  * 8516 CalBP ‒ 8493 CalBP (1.1%)
+  * 8480 CalBP ‒ 8157 CalBP (92.7%)
+  * 8115 CalBP ‒ 8114 CalBP (0.1%)
+  * 8089 CalBP ‒ 8058 CalBP (1.5%)
+
+  ----
+
+  IOSACal v0.2
 
 Multiple determinations from the same event can be checked for
 consistency and combined::
 
+  >>> from iosacal import R, combine
+  >>> from iosacal.text import single_text
   >>> r1 = R(4430, 100, 'Birm-637')
   >>> r2 = R(4430, 120, 'Birm-638')
   >>> r3 = R(4400, 100, 'Birm-639')
   >>> r4 = R(4350, 130, 'Birm-636')
-  >>> r_combined = combine([r1, r2, r3, r4], 'Skara Brae event 1')
+  >>> r_combined = combine([r1, r2, r3, r4])
   >>> print(r_combined)
 
-  Combined radiocarbon date for Skara Brae event 1: 4406 ± 55 BP
-  Chi-squared test statistic: 0.287
+  RadiocarbonSample( Combined from Birm-637, Birm-638, Birm-639, Birm-636 with test statistic 0.287 : 4406 ± 55 )
 
-  >>> r_combined_cal = r_combined.cal('IntCal13')
-  >>> print(r_combined_cal)
+  >>> r_combined_cal = r_combined.calibrate('intcal13')
+  >>> print(single_text(r_combined_cal))
 
-  Radiocarbon determination
-  -------------------------
+  # Combined from Birm-637, Birm-638, Birm-639, Birm-636 with test statistic 0.287
 
-  Skara Brae event 1: 4406 ± 55 BP
+  Calibration of Combined from Birm-637, Birm-638, Birm-639, Birm-636 with test statistic 0.287: 4406.465763017056 ± 55.163983474505095 BP
 
-  Calibrated age
-  --------------
+  ## Calibrated age
 
   Atmospheric data from Reimer et al (2013);
 
-  68.2% probability
-   BP 5210 - BP 5203 (2.1 %)
-   BP 5046 - BP 4870 (65.9 %)
+  ### 68.2% probability
 
-  95.4% probability
-   BP 5279 - BP 5164 (19.0 %)
-   BP 5135 - BP 5105 (3.6 %)
-   BP 5077 - BP 4855 (72.8 %)
+  * 5210 CalBP ‒ 5203 CalBP (2.2%)
+  * 5047 CalBP ‒ 4870 CalBP (65.8%)
 
-See how IOSACal can be `used interactively with IPython Notebook
-<http://nbviewer.ipython.org/gist/steko/60b18bcb87c9202384d9>`_.
+  ### 95.4% probability
+
+  * 5280 CalBP ‒ 5164 CalBP (19.3%)
+  * 5135 CalBP ‒ 5105 CalBP (3.6%)
+  * 5077 CalBP ‒ 4855 CalBP (72.5%)
+
+  ----
+
+  IOSACal v0.2
+
+IOSACal can be `used interactively with Jupyter Notebook
+<http://nbviewer.ipython.org/gist/steko/60b18bcb87c9202384d9>`_
+(formerly known as IPython Notebook).
 
 Install
 -------
@@ -136,11 +153,10 @@ Site contents
 .. toctree::
    :glob:
    :maxdepth: 1
-   
+
    how
    install
    developers
    resources
    whatsnew
    license
-
