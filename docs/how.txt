@@ -53,10 +53,10 @@ If you want an image instead of text output, just add the ``-p`` flag::
     $ iosacal -d 7505 -s 93 --id "P-769" -p
 
 The result will be saved into the image file named
-``P-769_7505±93.pdf`` in the same directory. It will look more or less
+``P-769_7505_93.pdf`` in the same directory. It will look more or less
 like this:
 
-.. image:: /images/P-769_7505±93.png
+.. image:: /images/P-769_7505_93.png
 
 Other calibration curves
 ------------------------
