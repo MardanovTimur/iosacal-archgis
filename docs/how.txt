@@ -178,8 +178,8 @@ Plot output
 
    Generate stacked plot with all samples.
 
-BP or BC/AD dates
-~~~~~~~~~~~~~~~~~
+BP or calendar dates
+~~~~~~~~~~~~~~~~~~~~
 
 Use these mutually exclusive options to choose which type of dates
 you like as output.
@@ -190,4 +190,8 @@ you like as output.
 
 .. cmdoption:: --ad
 
-   Express date in Calibrated BC/AD Calendar Age
+   Express date in Calibrated BC/AD calendar Age
+
+ .. cmdoption:: --ce
+
+    Express date in Calibrated BCE/CE calendar Age
