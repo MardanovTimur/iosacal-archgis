@@ -122,7 +122,7 @@ def main():
     calibrated_ages = []
     for d, s, id in zip(options.date, options.sigma, options.id):
         rs = core.R(d, s, id)
-        ca = rs.calibrate(options.curve)
+        ca = rs.calibrate(curve)
         calibrated_ages.append(ca)
         if options.plot and options.single is True:
             outputname = '{}_{:d}_{:d}.pdf'.format(id, d, s)
