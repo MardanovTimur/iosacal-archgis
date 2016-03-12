@@ -70,7 +70,7 @@ def alsuren_hpd(calibrated_age, alpha):
         # ^ is the XOR operator
         if (prev(i,hpd_curve[:,0]) not in hpd) ^ (next(i,hpd_curve[:,0]) not in hpd):
             confidence_intervals.append(i)
-    return asarray(confidence_intervals).reshape(len(confidence_intervals)/2,2)
+    return asarray(confidence_intervals).reshape(len(confidence_intervals)//2,2)
 
 
 def confidence_percent(years, calibrated_age):
