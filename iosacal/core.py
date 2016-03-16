@@ -99,9 +99,13 @@ class RadiocarbonDetermination(object):
         for i in curve:
             f_t, sigma_t = i[1:3]
             ca = calibrate(self.date, self.sigma, f_t, sigma_t)
-            # FIXME this treshold value is completely arbitrary
-            if ca > 0.000000001:
-                _calibrated_list.append((i[0],ca))
+            _calibrated_list.append((i[0],ca))
+
+        # We keep the values greater than arbitrary threshold 0.000000001
+        mini = np.min(np.where(np.array(_calibrated_list).T[1] > 0.000000001))
+        maxi = np.max(np.where(np.array(_calibrated_list).T[1] > 0.000000001))
+        _calibrated_list = _calibrated_list[mini:maxi]
+
         cal_age = CalAge(np.array(_calibrated_list), self, curve)
         return cal_age
 
