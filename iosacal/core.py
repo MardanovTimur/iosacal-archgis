@@ -1,7 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 # filename: core.py
-# Copyright 2008-2009, 2013 Stefano Costa <steko@iosa.it>
+# Copyright 2016 Stefano Costa <steko@iosa.it>
+# Copyright 2016 Mario Gutiérrez-Roig <mariogutierrezroig@gmail.com>
 #
 # This file is part of IOSACal, the IOSA Radiocarbon Calibration Library.
 
@@ -102,8 +103,9 @@ class RadiocarbonDetermination(object):
             _calibrated_list.append((i[0],ca))
 
         # We keep the values greater than arbitrary threshold 0.000000001
-        mini = np.min(np.where(np.array(_calibrated_list).T[1] > 0.000000001))
-        maxi = np.max(np.where(np.array(_calibrated_list).T[1] > 0.000000001))
+        above_threshold = np.where(np.array(_calibrated_list).T[1] > 0.000000001)
+        mini = np.min(above_threshold)
+        maxi = np.max(above_threshold)
         _calibrated_list = _calibrated_list[mini:maxi]
 
         cal_age = CalAge(np.array(_calibrated_list), self, curve)
