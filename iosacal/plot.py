@@ -84,7 +84,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
          verticalalignment='center',
          transform = ax1.transAxes,
          bbox=dict(facecolor='white', alpha=0.9, lw=0))
-    plt.text(0.0, 1.0,'IOSACal v0.2; {}'.format(calibration_curve.title),
+    plt.text(0.0, 1.0,'IOSACal v0.3; {}'.format(calibration_curve.title),
          horizontalalignment='left',
          verticalalignment='bottom',
          transform = ax1.transAxes,

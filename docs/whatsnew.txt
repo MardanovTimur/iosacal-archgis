@@ -4,16 +4,16 @@
 
 Release news for IOSACal.
 
-Release 0.3 (in development)
-============================
+Release 0.3 (released 2016-04-15)
+=================================
 
 - use ``genfromtxt`` to import calibration curves
-- intervals as a well-defined type
-- extra properties for ``R`` and ``CalAge`` objects (a simple JSON-like dict)
 - improved documentation
+- intervals as a well-defined type
+- restore AD/BC dates in both text and graphic output
 
-Release 0.2 (current)
-=====================
+Release 0.2 (released 2014-02-14)
+=================================
 
 Main highlights:
 

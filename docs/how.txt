@@ -4,10 +4,10 @@ User's manual
 
 .. contents::
 
-The current version of IOSACal is in alpha state (i.e. not suitable for
-production use), but has already all the basic functionality, like
-calibration, generation of publication-quality plots and determination
-of probability intervals.
+The current version of IOSACal is in beta state (i.e. suitable for experimental
+production use), but has already all the basic functionality, like calibration,
+generation of publication-quality plots and determination of probability
+intervals.
 
 Basic usage
 -----------
@@ -45,7 +45,7 @@ Output will look like the following:
 
   ----
 
-  IOSACal v0.2
+  IOSACal v0.3
 
 
 If you want an image instead of text output, just add the ``-p`` flag::

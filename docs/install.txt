@@ -19,14 +19,14 @@ All are available for major platforms. Order of installation matters.
 Download
 --------
 
-As a software, IOSACal is still in alpha stage. The 0.2 version was
-released in 2015: you can always get the *development version* from the
-`git repository`_, either with the `complete project history`_ or
-download the latest *released version* as a simple `source archive`_.
+As of version 0.3 (released in 2016) IOSACal is in beta stage. You can always
+get the *development version* from the `git repository`_, either with the
+`complete project history`_ or download the latest *released version* as a
+simple `source archive`_.
 
 .. _`git repository`: https://gitlab.com/iosa/iosacal/
 .. _`complete project history`: https://gitlab.com/iosa/iosacal/commits/master
-.. _`source archive`: https://gitlab.com/iosa/iosacal/repository/archive.zip?ref=v0.2
+.. _`source archive`: https://gitlab.com/iosa/iosacal/repository/archive.zip?ref=v0.3
 
 Installing
 ----------

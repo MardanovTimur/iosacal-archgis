@@ -45,7 +45,7 @@ Calibration of {0.radiocarbon_sample.id}: {0.radiocarbon_sample.date} ± {0.radi
 
 ----
 
-IOSACal v0.2
+IOSACal v0.3
 
 '''.format(calibrated_age, formatted_intervals)
 

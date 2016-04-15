@@ -47,7 +47,7 @@ The same features are available as a Python 3 library::
 
   ----
 
-  IOSACal v0.2
+  IOSACal v0.3
 
 Multiple determinations from the same event can be checked for
 consistency and combined::
@@ -87,7 +87,7 @@ consistency and combined::
 
   ----
 
-  IOSACal v0.2
+  IOSACal v0.3
 
 IOSACal can be `used interactively with Jupyter Notebook
 <http://nbviewer.ipython.org/gist/steko/60b18bcb87c9202384d9>`_
