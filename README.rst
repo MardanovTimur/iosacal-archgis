@@ -1,8 +1,7 @@
 A radiocarbon calibration software
 ==================================
 
-.. image:: https://zenodo.org/badge/doi/10.5281/zenodo.46443.svg
-   :target: http://dx.doi.org/10.5281/zenodo.46443
+DOI: `10.5281/zenodo.49858 <http://dx.doi.org/10.5281/zenodo.49858>`_
 
 IOSACal is the radiocarbon (14C) calibration software of the IOSA_ project.
 IOSACal includes:
@@ -21,7 +20,7 @@ License.
 
 .. _IOSA: http://www.iosa.it/
 
-.. image:: docs/images/image_790-60.png
+.. image:: https://gitlab.com/iosa/iosacal/raw/master/docs/images/P-769_7505_93.png
 
 Why another 14C calibration software ?
 --------------------------------------
