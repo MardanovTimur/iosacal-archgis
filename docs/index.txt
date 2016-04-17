@@ -147,6 +147,17 @@ IOSACal is based on current calibration methods, like those described in
    understanding, Archaeometry 50,2 (2008) pp. 249–275
    http://dx.doi.org/10.1111/j.1475-4754.2008.00394.x
 
+Can I cite IOSACal?
+-------------------
+
+Glad you asked. Yes, each release of IOSACal has a DOI on Zenodo. The latest
+release is |version| [IOSACALv03]_. While you could easily cite this website or
+the git repository, a DOI helps us get some recognition for creating and
+maintaining this software free for everyone.
+
+.. [IOSACALv03] Costa S. et al. (2016). IOSACal: v0.3. Zenodo.
+   http://doi.org/10.5281/zenodo.49858
+
 Site contents
 -------------
 
