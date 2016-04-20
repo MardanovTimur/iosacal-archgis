@@ -90,7 +90,7 @@ consistency and combined::
   IOSACal v0.3
 
 IOSACal can be `used interactively with Jupyter Notebook
-<http://nbviewer.ipython.org/gist/steko/60b18bcb87c9202384d9>`_
+<http://nbviewer.jupyter.org/urls/gitlab.com/iosa/iosacal/snippets/18122/raw>`_
 (formerly known as IPython Notebook).
 
 Install
