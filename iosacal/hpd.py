@@ -110,12 +110,12 @@ class ConfIntv(namedtuple('ConfIntv', ['from_year', 'to_year', 'conf_perc'])):
 
         fmt = fmt if len(fmt) > 0 else 'bp' # default fmt is ''
         if fmt == 'bp':
-            f = '{from_year:.0f} CalBP ‒ {to_year:.0f} CalBP ({conf_perc:2.1%})'.format(**self._asdict())
+            f = '{from_year:.0f} CalBP - {to_year:.0f} CalBP ({conf_perc:2.1%})'.format(**self._asdict())
         elif fmt == 'ad' or 'ce':
             ad = {'from_year': ad_bc_prefix(1950 - self.from_year, fmt),
                   'to_year': ad_bc_prefix(1950 - self.to_year, fmt),
                   'conf_perc': self.conf_perc}
-            f = '{from_year} ‒ {to_year} ({conf_perc:2.1%})'.format(**ad)
+            f = '{from_year} - {to_year} ({conf_perc:2.1%})'.format(**ad)
         return f
 
     __str__ = __format__
