@@ -109,6 +109,13 @@ parser.add_option_group(group)
 (options, args) = parser.parse_args()
 if not (options.date and options.sigma):
     parser.error('Please provide date and standard deviation')
+if len(options.date) != len(options.sigma):
+    parser.error('Mismatch in number of dates and standard deviation values')
+if options.id is None:
+    options.id = ['Determination #{}'.format(n) for n in range(len(options.date))]
+if len(options.id) != len(options.date):
+    parser.error('Mismatch in number of dates and ID values')
+
 
 def main():
     """Main program procedure.
