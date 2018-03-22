@@ -57,7 +57,7 @@ class CalibrationCurve(np.ndarray):
 
     def __new__(cls, curve_filename):
         title = open(curve_filename, encoding='latin-1').readline().strip('#\n')
-        _genfrom = np.genfromtxt(curve_filename, delimiter=',')
+        _genfrom = np.genfromtxt(curve_filename, delimiter=',', encoding='latin-1')
         # linear interpolation
         ud_curve = np.flipud(_genfrom)  # the sequence must be *increasing*
         curve_arange = np.arange(ud_curve[0,0],ud_curve[-1,0],1)
