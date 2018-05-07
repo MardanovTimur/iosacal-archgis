@@ -26,7 +26,7 @@ from optparse import OptionParser, OptionGroup
 from iosacal import core, plot, text
 
 
-usage = "usage: %prog -d DATE -s SIGMA [other options] ..."
+usage = "usage: %prog -d DATE -s SIGMA --id ID [other options] ..."
 
 parser = OptionParser(usage = usage)
 parser.add_option("-d", "--date",
