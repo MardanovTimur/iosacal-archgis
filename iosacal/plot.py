@@ -108,10 +108,11 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
     if oxcal is True:
         # imitate OxCal
         ax1.set_facecolor('white')
-        ax2.fill(
+        ax2.fill_between(
             calibrated_age[:,0],
-            calibrated_age[:,1] + max(calibrated_age[:,1])*0.3,
-            'k',
+            calibrated_age[:,1]*0,
+            calibrated_age[:,1],
+            facecolor='k',
             alpha=0.3,
             label='Calendar Age'
             )
@@ -122,10 +123,11 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
             alpha=0
             )
     else:
-        ax2.fill(
+        ax2.fill_between(
             calibrated_age[:,0],
+            calibrated_age[:,1]*0,
             calibrated_age[:,1],
-            'k',
+            facecolor='k',
             alpha=0.3,
             label='Calendar Age'
             )
@@ -143,11 +145,16 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
     # Radiocarbon Age
     sample_curve = norm.pdf(sample_interval, f_m, sigma_m)
 
+    if oxcal is True:
+        sample_fill_color = '#fac5cd'
+    else:
+        sample_fill_color = 'w'
     ax3 = plt.twiny(ax1)
     ax3.fill(
         sample_curve,
         sample_interval,
         '1.0',
+        facecolor=sample_fill_color,
         alpha=0.8
         )
     ax3.set_xbound(0,max(sample_curve)*4)
@@ -158,11 +165,13 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
     curve_low = calibration_curve[:,1] - calibration_curve[:,2]
     curve_high = calibration_curve[:,1] + calibration_curve[:,2]
 
-    xs, ys = ax1.fill_between(calibration_curve[:,0],
-                               curve_low,
-                               curve_high)
-    ax1.fill(xs, ys, fc='#000000', ec='none', alpha=0.15)
-    ax1.plot(calibration_curve[:,0], calibration_curve[:,1], COLORS['bgcolor'])
+    ax1.fill_between(calibration_curve[:,0],
+                     curve_low,
+                     curve_high,
+                     facecolor='#000000',
+                     edgecolor='none',
+                     alpha=0.15)
+    ax1.plot(calibration_curve[:,0], calibration_curve[:,1], 'k', lw=0.5, alpha=0.7)
 
     # Confidence intervals
 
@@ -268,10 +277,11 @@ def stacked_plot(calibrated_ages,name='Stacked plot',oxcal=False, BP='bp', outpu
 
         # Calendar Age
 
-        ax.fill(
+        ax.fill_between(
             calibrated_age[:,0],
+            calibrated_age[:,1]*0,
             calibrated_age[:,1],
-            'k',
+            facecolor='k',
             alpha=0.3,
             label='Calendar Age'
             )
@@ -279,7 +289,7 @@ def stacked_plot(calibrated_ages,name='Stacked plot',oxcal=False, BP='bp', outpu
             calibrated_age[:,0],
             calibrated_age[:,1],
             'k',
-            alpha=0
+            alpha=0.6
             )
         ax.set_ybound(
             min(calibrated_age[:,1]),
