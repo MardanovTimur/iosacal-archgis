@@ -108,10 +108,11 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
     if oxcal is True:
         # imitate OxCal
         ax1.set_facecolor('white')
-        ax2.fill(
+        ax2.fill_between(
             calibrated_age[:,0],
-            calibrated_age[:,1] + max(calibrated_age[:,1])*0.3,
-            'k',
+            calibrated_age[:,1]*0,
+            calibrated_age[:,1],
+            facecolor='k',
             alpha=0.3,
             label='Calendar Age'
             )
@@ -122,10 +123,11 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
             alpha=0
             )
     else:
-        ax2.fill(
+        ax2.fill_between(
             calibrated_age[:,0],
+            calibrated_age[:,1]*0,
             calibrated_age[:,1],
-            'k',
+            facecolor='k',
             alpha=0.3,
             label='Calendar Age'
             )
@@ -164,7 +166,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
                      facecolor='#000000',
                      edgecolor='none',
                      alpha=0.15)
-    ax1.plot(calibration_curve[:,0], calibration_curve[:,1], COLORS['bgcolor'])
+    ax1.plot(calibration_curve[:,0], calibration_curve[:,1], 'k', lw=0.5, alpha=0.7)
 
     # Confidence intervals
 
