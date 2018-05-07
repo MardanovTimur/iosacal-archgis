@@ -158,10 +158,12 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
     curve_low = calibration_curve[:,1] - calibration_curve[:,2]
     curve_high = calibration_curve[:,1] + calibration_curve[:,2]
 
-    xs, ys = ax1.fill_between(calibration_curve[:,0],
-                               curve_low,
-                               curve_high)
-    ax1.fill(xs, ys, fc='#000000', ec='none', alpha=0.15)
+    ax1.fill_between(calibration_curve[:,0],
+                     curve_low,
+                     curve_high,
+                     facecolor='#000000',
+                     edgecolor='none',
+                     alpha=0.15)
     ax1.plot(calibration_curve[:,0], calibration_curve[:,1], COLORS['bgcolor'])
 
     # Confidence intervals
