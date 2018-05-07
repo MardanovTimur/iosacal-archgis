@@ -28,8 +28,9 @@ setup(name='iosacal',
       zip_safe=False,
       install_requires=[
          # -*- Extra requirements: -*-
-        'numpy >= 1.8.0',
-        'matplotlib >= 1.3.0'
+        'numpy >= 1.14.0',
+        'scipy' >= '1.1.0',
+        'matplotlib >= 2.2.0'
       ],
       entry_points= {
         'console_scripts': [
