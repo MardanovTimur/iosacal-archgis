@@ -22,7 +22,8 @@ import matplotlib
 matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
-import matplotlib.mlab as mlab
+
+from scipy.stats import norm
 
 COLORS = {
     'bgcolor': '#e5e4e5',
@@ -140,7 +141,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
     ax2.set_axis_off()
 
     # Radiocarbon Age
-    sample_curve = mlab.normpdf(sample_interval, f_m, sigma_m)
+    sample_curve = norm.pdf(sample_interval, f_m, sigma_m)
 
     ax3 = plt.twiny(ax1)
     ax3.fill(
@@ -154,12 +155,12 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
 
     # Calibration Curve
 
-    mlab_low = calibration_curve[:,1] - calibration_curve[:,2]
-    mlab_high = calibration_curve[:,1] + calibration_curve[:,2]
+    curve_low = calibration_curve[:,1] - calibration_curve[:,2]
+    curve_high = calibration_curve[:,1] + calibration_curve[:,2]
 
-    xs, ys = mlab.poly_between(calibration_curve[:,0],
-                               mlab_low,
-                               mlab_high)
+    xs, ys = ax1.fill_between(calibration_curve[:,0],
+                               curve_low,
+                               curve_high)
     ax1.fill(xs, ys, fc='#000000', ec='none', alpha=0.15)
     ax1.plot(calibration_curve[:,0], calibration_curve[:,1], COLORS['bgcolor'])
 
