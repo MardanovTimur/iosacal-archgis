@@ -268,10 +268,11 @@ def stacked_plot(calibrated_ages,name='Stacked plot',oxcal=False, BP='bp', outpu
 
         # Calendar Age
 
-        ax.fill(
+        ax.fill_between(
             calibrated_age[:,0],
+            calibrated_age[:,1]*0,
             calibrated_age[:,1],
-            'k',
+            facecolor='k',
             alpha=0.3,
             label='Calendar Age'
             )
@@ -279,7 +280,7 @@ def stacked_plot(calibrated_ages,name='Stacked plot',oxcal=False, BP='bp', outpu
             calibrated_age[:,0],
             calibrated_age[:,1],
             'k',
-            alpha=0
+            alpha=0.6
             )
         ax.set_ybound(
             min(calibrated_age[:,1]),
