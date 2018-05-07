@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 # filename: cli.py
-# Copyright 2008-2010, 2013-2014 Stefano Costa <steko@iosa.it>
+# Copyright 2018 Stefano Costa <steko@iosa.it>
 #
 # This file is part of IOSACal, the IOSA Radiocarbon Calibration Library.
 

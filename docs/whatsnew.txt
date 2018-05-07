@@ -4,6 +4,22 @@
 
 Release news for IOSACal.
 
+Release 0.4 (released 2018-05-XX)
+=================================
+
+The main highlight of this release are the new classes for summed probability
+distributions (SPD) and paleodemography, contributed by Mario Gutiérrez-Roig
+as part of his work for the PALEODEM_ project at IPHES_.
+
+.. _PALEODEM: http://paleodem.eu/
+.. _IPHES: http://www.iphes.cat/
+
+On the technical side:
+
+- requires NumPy 1.14, SciPy 1.1 and Matplotlib 2.2
+- removed dependencies on obsolete functions
+- improved the command line interface
+
 Release 0.3 (released 2016-04-15)
 =================================
 

@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 # filename: core.py
-# Copyright 2016 Stefano Costa <steko@iosa.it>
+# Copyright 2018 Stefano Costa <steko@iosa.it>
 # Copyright 2017 Mario Gutiérrez-Roig <mariogutierrezroig@gmail.com>
 #
 # This file is part of IOSACal, the IOSA Radiocarbon Calibration Library.

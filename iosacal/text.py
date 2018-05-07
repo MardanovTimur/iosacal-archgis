@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # filename: text.py
-# Copyright 2009-2010, 2013-2014 Stefano Costa <steko@iosa.it>
+# Copyright 2018 Stefano Costa <steko@iosa.it>
 #
 # This file is part of IOSACal, the IOSA Radiocarbon Calibration Library.
 
@@ -18,6 +18,8 @@
 # along with IOSACal.  If not, see <http://www.gnu.org/licenses/>.
 
 from textwrap import indent
+
+import iosacal
 
 def single_text(calibrated_age, BP='bp'):
     '''Output calibrated age as simple Markdown text to the terminal.'''
@@ -45,8 +47,8 @@ Calibration of {0.radiocarbon_sample.id}: {0.radiocarbon_sample.date} ± {0.radi
 
 ----
 
-IOSACal v0.3
+IOSACal v{2}
 
-'''.format(calibrated_age, formatted_intervals)
+'''.format(calibrated_age, formatted_intervals, iosacal.__VERSION__)
 
     return output

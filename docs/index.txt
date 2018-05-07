@@ -45,9 +45,6 @@ The same features are available as a Python 3 library::
   * 8115 CalBP ‒ 8114 CalBP (0.1%)
   * 8089 CalBP ‒ 8058 CalBP (1.5%)
 
-  ----
-
-  IOSACal v0.3
 
 Multiple determinations from the same event can be checked for
 consistency and combined::
@@ -85,9 +82,6 @@ consistency and combined::
   * 5135 CalBP ‒ 5105 CalBP (3.6%)
   * 5077 CalBP ‒ 4855 CalBP (72.5%)
 
-  ----
-
-  IOSACal v0.3
 
 IOSACal can be `used interactively with Jupyter Notebook
 <http://nbviewer.jupyter.org/urls/gitlab.com/iosa/iosacal/snippets/18122/raw>`_
@@ -147,16 +141,25 @@ IOSACal is based on current calibration methods, like those described in
    understanding, Archaeometry 50,2 (2008) pp. 249–275
    http://dx.doi.org/10.1111/j.1475-4754.2008.00394.x
 
-Can I cite IOSACal?
--------------------
+Can I use IOSACal for my research?
+----------------------------------
 
-Glad you asked. Yes, each release of IOSACal has a DOI on Zenodo. The latest
-release is |version| [IOSACALv03]_. While you could easily cite this website or
-the git repository, a DOI helps us get some recognition for creating and
-maintaining this software free for everyone.
+Yes, IOSACal has been used in research projects with large numbers of radiocarbon
+dates. Using IOSACal with Jupyter Notebooks is ideal for reproducible research
+that can be easily shared. Furthermore, it takes little effort to customize and
+adapt the existing code to your specific needs. IOSACal is reasonably fast,
+especially for batch processing.
 
-.. [IOSACALv03] Costa S. et al. (2016). IOSACal: v0.3. Zenodo.
-   http://doi.org/10.5281/zenodo.49858
+The `web application`_ is ideal for quick checks on single radiocarbon dates,
+and requires no registration.
+
+.. _`web application`: http://iosacal.herokuapp.com/
+
+If you make use of IOSACal in your work, please cite it with the appropriate
+reference [IOSACAL_Zenodo]_. This helps us get some recognition for creating
+and maintaining this software free for everyone.
+
+.. [IOSACAL_Zenodo] https://doi.org/10.5281/zenodo.630455
 
 Site contents
 -------------

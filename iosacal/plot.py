@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 # filename: plot.py
-# Copyright 2009, 2013-2014 Stefano Costa <steko@iosa.it>
+# Copyright 2018 Stefano Costa <steko@iosa.it>
 #
 # This file is part of IOSACal, the IOSA Radiocarbon Calibration Library.
 
@@ -22,6 +22,7 @@ import matplotlib
 matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
+import iosacal
 
 from scipy.stats import norm
 
@@ -85,7 +86,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
          verticalalignment='center',
          transform = ax1.transAxes,
          bbox=dict(facecolor='white', alpha=0.9, lw=0))
-    plt.text(0.0, 1.0,'IOSACal v0.3; {}'.format(calibration_curve.title),
+    plt.text(0.0, 1.0,'IOSACal v{}; {}'.format(iosacal.__VERSION__, calibration_curve.title),
          horizontalalignment='left',
          verticalalignment='bottom',
          transform = ax1.transAxes,

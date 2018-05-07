@@ -43,10 +43,6 @@ Output will look like the following:
   * 8115 CalBP ‒ 8114 CalBP (0.1%)
   * 8089 CalBP ‒ 8058 CalBP (1.5%)
 
-  ----
-
-  IOSACal v0.3
-
 
 If you want an image instead of text output, just add the ``-p`` flag::
 
