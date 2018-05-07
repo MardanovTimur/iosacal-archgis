@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # filename: core.py
 # Copyright 2016 Stefano Costa <steko@iosa.it>
-# Copyright 2016 Mario Gutiérrez-Roig <mariogutierrezroig@gmail.com>
+# Copyright 2017 Mario Gutiérrez-Roig <mariogutierrezroig@gmail.com>
 #
 # This file is part of IOSACal, the IOSA Radiocarbon Calibration Library.
 
@@ -20,7 +20,7 @@
 # along with IOSACal.  If not, see <http://www.gnu.org/licenses/>.
 
 import pkg_resources
-
+import sys
 from csv import reader
 from math import exp, pow, sqrt
 
@@ -42,6 +42,45 @@ See doi: 10.1111/j.1475-4754.2008.00394.x for a detailed account.'''
     P_t = ( exp( - pow(f_m - f_t, 2 ) /
                    ( 2 * ( sigma_sum ) ) ) / sqrt(sigma_sum) )
     return P_t
+
+
+def confint(boot_set):
+    ''' Calculates the Confidence Intervals of a Bootstrap set.
+
+    This function returns the 68.27% C.I. (1-sigma) and 95.44% C.I. (2-sigma)
+    of a set of simulated curves.
+
+    Arguments:
+        boot_set -- List with simulated curves as (x,y).
+
+    '''
+
+    mini = np.int(np.min([np.min(x.T[0]) for x in boot_set]))
+    maxi = np.int(np.max([np.max(x.T[0]) for x in boot_set]))
+    Nboot = len(boot_set)
+
+    yrange = []
+    for spd in boot_set:
+        y = np.array([[val[0], val[1]] for val in spd if (val[0] >= mini) and (val[0] <= maxi)])
+        yy = np.lib.pad(y.T[1], (np.int(y.T[0][0] - mini), np.int(maxi - y.T[0][-1])), 'constant', constant_values=0)
+        yrange.append(yy)
+
+    yrange = np.array(yrange).T
+
+    CIxrange = np.arange(mini, maxi + 1)
+    CI95sup = []
+    CI68sup = []
+    CImed = []
+    CI68inf = []
+    CI95inf = []
+    for val in yrange:
+        CI95sup.append(np.sort(val)[np.int(0.9772 * Nboot)])
+        CI68sup.append(np.sort(val)[np.int(0.8413 * Nboot)])
+        CImed.append(np.sort(val)[np.int(0.5 * Nboot)])
+        CI68inf.append(np.sort(val)[np.int(0.1587 * Nboot)])
+        CI95inf.append(np.sort(val)[np.int(0.0228 * Nboot)])
+
+    return np.array([CIxrange, CI95inf, CI68inf, CImed, CI68sup, CI95sup])
 
 
 class CalibrationCurve(np.ndarray):
@@ -77,6 +116,55 @@ class CalibrationCurve(np.ndarray):
         if obj is None: return
         self.title = getattr(obj, 'title', None)
 
+    def mixing(self, curve2_name, P, D=0, deltaR=0, err_deltaR=0):
+        '''Transforms the calibration curve by mixing with another curve.
+
+        The mathematical equation for the mixing is the same than in
+        OxCal, as indicated in:
+
+        http://c14.arch.ox.ac.uk/oxcal3/math_ca.htm#mix_curves
+
+        Curve 1 (self): R_1 +/- E_1
+        Curve 2 : R_2 +/- E_2
+        Mixing : R_m +/- E_m
+
+        where,
+
+        R_m = (1 - P) * R_1 + P * R_2
+        E_m = sqrt(((1 - P) * E_1)^2 + (P * E_2)^2 + (D * (R_1 - R_2))^2)
+
+        The local corrections fo the reservoir effect are applicated over the
+        calibration curve as:
+
+        R_2_corrected(t) = R_2(t) + deltaR
+        E_2_corrected(t) = sqrt((E_2(t))^2 + err_deltaR^2)
+
+        Arguments:
+            curve2_name -- The name of the second curve to mix
+            P -- Proportion of the second curve
+            D -- Error of the proportion
+            deltaR -- Reservoir Effect
+            err_deltaR -- Error in deltaR
+
+        '''
+        curve1 = self
+
+        curve2_path = pkg_resources.resource_filename("iosacal", "data/%s.14c" % curve2_name)
+        curve2 = CalibrationCurve(curve2_path)
+
+        # Reservoir Effects
+        if deltaR > 0:
+            curve2.T[1] += deltaR
+            curve2.T[2] = np.sqrt(np.power(curve2.T[2], 2) + np.power(err_deltaR, 2))
+
+        self.T[0] = curve1.T[0]
+        self.T[1] = (1. - P) * curve1.T[1] + P * curve2.T[1]
+        self.T[2] = np.sqrt(np.power((1. - P) * curve1.T[2], 2) + np.power(P * curve2.T[2], 2) + np.power(
+            D * (curve1.T[1] - curve2.T[1]), 2))
+
+        # add the new attribute to the created instance
+        self.title = "Mixed_curve"
+
     def __str__(self):
         return "CalibrationCurve( %s )" % self.title
 
@@ -89,26 +177,40 @@ class RadiocarbonDetermination(object):
         self.sigma = sigma
         self.id = id
 
-    def calibrate(self, curve):
-        '''Perform calibration, given a calibration curve.'''
+    def calibrate(self, curve, norm=True, cutoff=5):
+        '''Perform calibration, given a calibration curve.
+
+        Arguments:
+            curve -- Calibration curve
+            norm -- Normalization in Calendar Scale
+            cutoff -- How much of radiocarbon gaussian range are we considering (in sigmas)
+
+        '''
 
         if not isinstance(curve, CalibrationCurve):
             curve_filename = pkg_resources.resource_filename("iosacal", "data/%s.14c" % curve)
             curve = CalibrationCurve(curve_filename)
 
         _calibrated_list = []
-        for i in curve:
+
+        # We apply the cutoff for the gaussian range in 14C scale
+        idx = np.where((curve.T[1] > self.date - cutoff * self.sigma) & (curve.T[1] < self.date + cutoff * self.sigma))
+        idxmin = np.min(idx)
+        idxmax = np.max(idx)
+
+        for i in curve[idxmin:idxmax]:
             f_t, sigma_t = i[1:3]
             ca = calibrate(self.date, self.sigma, f_t, sigma_t)
             _calibrated_list.append((i[0],ca))
 
-        # We keep the values greater than arbitrary threshold 0.000000001
-        above_threshold = np.where(np.array(_calibrated_list).T[1] > 0.000000001)
-        mini = np.min(above_threshold)
-        maxi = np.max(above_threshold)
-        _calibrated_list = _calibrated_list[mini:maxi]
+        if norm == True:
+            x = np.array(_calibrated_list).T[0]
+            y = np.array(_calibrated_list).T[1] / np.sum(np.array(_calibrated_list).T[1])
+            calibrated_curve = np.column_stack((x, y))
+        else:
+            calibrated_curve = np.array(_calibrated_list)
 
-        cal_age = CalAge(np.array(_calibrated_list), self, curve)
+        cal_age = CalAge(calibrated_curve, self, curve)
         return cal_age
 
     def __str__(self):
@@ -122,7 +224,6 @@ class R(RadiocarbonDetermination):
 
 
 class CalAge(np.ndarray):
-
     '''A calibrated radiocarbon age.
 
     It is expressed as a probability distribution on the calBP
@@ -144,6 +245,7 @@ class CalAge(np.ndarray):
             68: hpd_interval(obj,0.318),
             95: hpd_interval(obj,0.046)
         }
+        obj.median = np.mean(hpd_interval(obj, 0.5))
         # Finally, we must return the newly created object:
         return obj
 
@@ -168,6 +270,7 @@ class CalAge(np.ndarray):
 
     def __str__(self):
         return 'CalAge( {radiocarbon_sample.id} based on "{calibration_curve.title}" )'.format(**self.__dict__)
+
 
 def combine(determinations):
     '''Combine n>1 determinations related to the same event.
