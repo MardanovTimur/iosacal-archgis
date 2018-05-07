@@ -1,13 +1,13 @@
 A radiocarbon calibration software
 ==================================
 
-DOI: `10.5281/zenodo.49858 <http://dx.doi.org/10.5281/zenodo.49858>`_
+DOI: `<https://doi.org/10.5281/zenodo.630455>`_
 
-IOSACal is the radiocarbon (14C) calibration software of the IOSA_ project.
+IOSACal is the open source radiocarbon calibration software of the IOSA_ project.
 IOSACal includes:
 
 - a programming library
-- a web-based application
+- a `web-based application`_
 - a command-line program
 
 IOSACal is written in the Python programming language and it can run natively
@@ -18,6 +18,9 @@ Microsoft Windows.
 Source code is made available under the terms of the GNU General Public
 License.
 
+The documentation is online at `<http://c14.iosa.it/>`_.
+
+.. _`web-based application`: http://iosacal.herokuapp.com/
 .. _IOSA: http://www.iosa.it/
 
 .. image:: https://gitlab.com/iosa/iosacal/raw/master/docs/images/P-769_7505_93.png
@@ -39,8 +42,8 @@ Furthermore, writing this software from scratch is an alternative way of
 learning how 14C calibration works, not only in strict mathematical terms,
 but also from a practical point of view.
 
-What can it do ?
-----------------
+Features
+--------
 
 IOSACal takes a radiocarbon determination and outputs a calibrated age as a set
 of probability intervals. A radiocarbon date is represented by a date in years
@@ -65,8 +68,22 @@ IOSACal is based on current calibration methods, like those described in
    understanding, Archaeometry 50,2 (2008) pp. 249–275
    http://dx.doi.org/10.1111/j.1475-4754.2008.00394.x
 
-Who should use it ?
--------------------
+Can I use IOSACal for my research?
+----------------------------------
 
-At this time, only those who like experiments should use it, but anyone is
-welcome to download the code and give us feedback.
+Yes, IOSACal has been used in research projects with large numbers of radiocarbon
+dates. Using IOSACal with Jupyter Notebooks is ideal for reproducible research
+that can be easily shared. Furthermore, it takes little effort to customize and
+adapt the existing code to your specific needs. IOSACal is reasonably fast,
+especially for batch processing.
+
+The `web application`_ is ideal for quick checks on single radiocarbon dates,
+and requires no registration.
+
+.. _`web application`: http://iosacal.herokuapp.com/
+
+If you make use of IOSACal in your work, please cite it with the appropriate
+reference [IOSACAL_Zenodo]_. This helps us get some recognition for creating
+and maintaining this software free for everyone.
+
+.. [IOSACAL_Zenodo] https://doi.org/10.5281/zenodo.630455
