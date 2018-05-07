@@ -145,11 +145,16 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
     # Radiocarbon Age
     sample_curve = norm.pdf(sample_interval, f_m, sigma_m)
 
+    if oxcal is True:
+        sample_fill_color = '#fac5cd'
+    else:
+        sample_fill_color = 'w'
     ax3 = plt.twiny(ax1)
     ax3.fill(
         sample_curve,
         sample_interval,
         '1.0',
+        facecolor=sample_fill_color,
         alpha=0.8
         )
     ax3.set_xbound(0,max(sample_curve)*4)
