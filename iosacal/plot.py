@@ -70,7 +70,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
     fig = plt.figure(figsize=(12,8))
     fig.clear()
     ax1 = plt.subplot(111)
-    ax1.set_axis_bgcolor(COLORS['bgcolor'])
+    ax1.set_facecolor(COLORS['bgcolor'])
     plt.xlabel("Calibrated age ({})".format(ad_bp_label))
     plt.ylabel("Radiocarbon determination (BP)")
     plt.text(0.5, 0.95,
@@ -107,7 +107,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
 
     if oxcal is True:
         # imitate OxCal
-        ax1.set_axis_bgcolor('white')
+        ax1.set_facecolor('white')
         ax2.fill(
             calibrated_age[:,0],
             calibrated_age[:,1] + max(calibrated_age[:,1])*0.3,
