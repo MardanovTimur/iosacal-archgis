@@ -4,7 +4,7 @@
 
 Release news for IOSACal.
 
-Release 0.4 (released 2018-05-XX)
+Release 0.4 (released 2018-05-08)
 =================================
 
 The main highlight of this release are the new classes for summed probability
