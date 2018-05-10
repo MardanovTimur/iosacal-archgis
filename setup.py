@@ -33,6 +33,7 @@ setup(
     url="http://c14.iosa.it/",
     license="GNU GPLv3",
     packages=find_packages(exclude=["ez_setup", "examples", "tests"]),
+    python_requires='~=3.6',
     package_data={"iosacal": ["data/*.14c"]},
     include_package_data=True,
     zip_safe=False,
