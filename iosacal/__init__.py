@@ -4,7 +4,7 @@ from iosacal.core import R, combine
 from iosacal.plot import iplot
 
 
-i18n_dir = abspath(join(dirname(abspath(dirname(__file__))), 'i18n'))
+i18n_dir = abspath(join(abspath(dirname(__file__)), 'i18n'))
 i18n = gettext.translation('iosacal', localedir=i18n_dir,
                            languages=['en'])
 i18n.install()
