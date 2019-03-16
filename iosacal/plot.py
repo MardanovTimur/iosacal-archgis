@@ -19,7 +19,7 @@
 # along with IOSACal.  If not, see <http://www.gnu.org/licenses/>.
 
 import matplotlib
-matplotlib.use('Agg')
+#  matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
 import iosacal
@@ -243,7 +243,7 @@ def single_plot(calibrated_age, oxcal=True, output=None, BP='bp'):
     # FIXME the following values 10 and 5 are arbitrary and could be probably
     # drawn from the f_m value itself, while preserving their ratio
     ax1.set_ybound(f_m - sigma_m * 15, f_m + sigma_m * 5)
-    ax1.set_xbound(min(calibrated_age[:,0]),max(calibrated_age[:,0]))
+    ax1.set_xbound(min(calibrated_age[:,0])-10,max(calibrated_age[:,0]+10))
     if BP == 'bp':
         ax1.invert_xaxis()
 
