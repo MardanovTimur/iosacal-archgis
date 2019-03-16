@@ -36,7 +36,7 @@ def single_text(calibrated_age, BP='bp', lang="en"):
     if 'Combined' in radiocarbon_sample:
         radiocarbon_sample = ""
     output = '''
-# {radiocarbon_sample_id} **{radiocarbon_sample_date} ± {sigma}**
+## {radiocarbon_sample_id} **{radiocarbon_sample_date} ± {sigma}**
 
 {calibration_text}: {0.radiocarbon_sample.id}: {average_age} {years_ago_text}
 
