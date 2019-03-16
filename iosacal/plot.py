@@ -19,7 +19,7 @@
 # along with IOSACal.  If not, see <http://www.gnu.org/licenses/>.
 
 import matplotlib
-#  matplotlib.use('Agg')
+matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
 import iosacal

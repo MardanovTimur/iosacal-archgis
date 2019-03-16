@@ -23,9 +23,7 @@ from textwrap import indent
 
 def single_text(calibrated_age, BP='bp', lang="en"):
     '''Output calibrated age as simple Markdown text to the terminal.'''
-    if lang != 'en':
-        global _
-        _ = change_lang(lang)
+    _ = change_lang(lang)
     formatted_intervals = dict()
     for a, i in calibrated_age.intervals.items():
         formatted_intervals[a] = indent('{:{fmt}}'.format(i, fmt=BP), '* ')
