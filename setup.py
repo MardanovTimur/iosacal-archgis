@@ -34,7 +34,7 @@ setup(
     license="GNU GPLv3",
     packages=find_packages(exclude=["ez_setup", "examples", "tests"]),
     python_requires='~=3.6',
-    package_data={"iosacal": ["data/*.14c", 'i18n/*']},
+    package_data={"iosacal": ["data/*.14c", 'i18n/*/*/*.*']},
     include_package_data=True,
     zip_safe=False,
     install_requires=[
