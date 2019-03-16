@@ -16,39 +16,49 @@
 
 # You should have received a copy of the GNU General Public License
 # along with IOSACal.  If not, see <http://www.gnu.org/licenses/>.
+import iosacal
+from iosacal import ugettext as _, change_lang
 
 from textwrap import indent
 
-import iosacal
-
-def single_text(calibrated_age, BP='bp'):
+def single_text(calibrated_age, BP='bp', lang="en"):
     '''Output calibrated age as simple Markdown text to the terminal.'''
-
+    if lang != 'en':
+        global _
+        _ = change_lang(lang)
     formatted_intervals = dict()
     for a, i in calibrated_age.intervals.items():
         formatted_intervals[a] = indent('{:{fmt}}'.format(i, fmt=BP), '* ')
-
+    calibrated_age_max = max(list(calibrated_age.intervals[95]),
+            key=lambda i: i.conf_perc)
+    calibrated_age_average = abs(calibrated_age_max.from_year + calibrated_age_max.to_year) / 2
+    radiocarbon_sample = calibrated_age.radiocarbon_sample.id
+    if 'Combined' in radiocarbon_sample:
+        radiocarbon_sample = ""
     output = '''
-# {0.radiocarbon_sample.id}
+# {radiocarbon_sample_id} **{radiocarbon_sample_date} ± {sigma}**
 
-Calibration of {0.radiocarbon_sample.id}: {0.radiocarbon_sample.date} ± {0.radiocarbon_sample.sigma} BP
+{calibration_text}: {0.radiocarbon_sample.id}: {average_age} {years_ago_text}
 
-## Calibrated age
+### {calibrated_age_text}:
 
-{0.calibration_curve.title}
-
-### 68.2% probability
+#### 68.2% {probability_text}
 
 {1[68]}
 
-### 95.4% probability
+#### 95.4% {probability_text}
 
 {1[95]}
-
-----
-
-IOSACal v{2}
-
-'''.format(calibrated_age, formatted_intervals, iosacal.__VERSION__)
-
+'''.format(calibrated_age,
+        formatted_intervals,
+        iosacal.__VERSION__,
+        radiocarbon_sample_date=int(round(calibrated_age.radiocarbon_sample.date)),
+        sigma=round(calibrated_age[0].radiocarbon_sample.sigma),
+        calibration_text=_("Calibration"),
+        calibrated_age_text=_("Calibrated calendar age"),
+        probability_text=_("Probability"),
+        years_ago_text=_("year ago"),
+        cal_age_max=calibrated_age_max,
+        average_age=int(round(calibrated_age_average)),
+        radiocarbon_sample_id=radiocarbon_sample)
     return output

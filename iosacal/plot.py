@@ -19,7 +19,7 @@
 # along with IOSACal.  If not, see <http://www.gnu.org/licenses/>.
 
 import matplotlib
-matplotlib.use('Agg')
+#  matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
 import iosacal
@@ -30,8 +30,7 @@ COLORS = {
     'bgcolor': '#e5e4e5',
 }
 
-def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
-
+def single_plot(calibrated_age, oxcal=True, output=None, BP='bp'):
     calibrated_age = calibrated_age
     f_m = calibrated_age.radiocarbon_sample.date
     sigma_m = calibrated_age.radiocarbon_sample.sigma
@@ -39,6 +38,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
     calibration_curve = calibrated_age.calibration_curve
     intervals = calibrated_age.intervals
     sample_interval = calibration_curve[:,0].copy() # for determination plot
+
 
     # adjust plot bounds
     min_year, max_year = (50000, -50000)
@@ -74,21 +74,34 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
     ax1.set_facecolor(COLORS['bgcolor'])
     plt.xlabel("Calibrated age ({})".format(ad_bp_label))
     plt.ylabel("Radiocarbon determination (BP)")
-    plt.text(0.5, 0.95,
-         r'{}: {:.0f} ± {:.0f} BP'.format(radiocarbon_sample_id, f_m, sigma_m),
-         horizontalalignment='center',
-         verticalalignment='center',
-         transform = ax1.transAxes,
-         bbox=dict(facecolor='white', alpha=0.9, lw=0))
-    plt.text(0.75, 0.80,
+    if "Combined" in radiocarbon_sample_id:
+        plt.set_figsize=(16,8)
+        splitted = radiocarbon_sample_id.split(",")[:31]
+        combined_text = ",\n".join(splitted)
+        plt.rcParams.update({'font.size': 12})
+        plt.text(0.5, 0.95,
+             r'{:.0f} ± {:.0f} BP'.format(f_m, sigma_m),
+             horizontalalignment='center',
+             verticalalignment='center',
+             transform = ax1.transAxes,
+             bbox=dict(facecolor='white', alpha=0.9, lw=0))
+        plt.rcParams.update({'font.size': 10})
+    else:
+        plt.text(0.5, 0.95,
+             r'{}: {:.0f} ± {:.0f} BP'.format(radiocarbon_sample_id, f_m, sigma_m),
+             horizontalalignment='center',
+             verticalalignment='center',
+             transform = ax1.transAxes,
+             bbox=dict(facecolor='white', alpha=0.9, lw=0))
+    plt.text(0.73, .75,
          '68.2% probability\n{}\n\n95.4% probability\n{}'.format(string68, string95),
          horizontalalignment='left',
-         verticalalignment='center',
+         verticalalignment='baseline',
          transform = ax1.transAxes,
-         bbox=dict(facecolor='white', alpha=0.9, lw=0))
-    plt.text(0.0, 1.0,'IOSACal v{}; {}'.format(iosacal.__VERSION__, calibration_curve.title),
-         horizontalalignment='left',
-         verticalalignment='bottom',
+         bbox=dict(facecolor='white', alpha=0.7, lw=1))
+    plt.text(.15, -.1,'{} (iosacal)'.format(calibration_curve.title),
+         horizontalalignment='center',
+         verticalalignment='top',
          transform = ax1.transAxes,
          size=10,
          bbox=dict(facecolor='white', alpha=0.9, lw=0))
@@ -147,7 +160,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
     sample_curve = norm.pdf(sample_interval, f_m, sigma_m)
 
     if oxcal is True:
-        sample_fill_color = '#fac5cd'
+        sample_fill_color = '#FFB1B0'
     else:
         sample_fill_color = 'w'
     ax3 = plt.twiny(ax1)
@@ -156,7 +169,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
         sample_interval,
         '1.0',
         facecolor=sample_fill_color,
-        alpha=0.8
+        alpha=1
         )
     ax3.set_xbound(0,max(sample_curve)*4)
     ax3.set_axis_off()
@@ -169,9 +182,9 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
     ax1.fill_between(calibration_curve[:,0],
                      curve_low,
                      curve_high,
-                     facecolor='#000000',
-                     edgecolor='none',
-                     alpha=0.15)
+                     facecolor='#B1B0FF',
+                     edgecolor='#EDEDED',
+                     alpha=0.8)
     ax1.plot(calibration_curve[:,0], calibration_curve[:,1], 'k', lw=0.5, alpha=0.7)
 
     # Confidence intervals
@@ -238,7 +251,7 @@ def single_plot(calibrated_age, oxcal=False, output=None, BP='bp'):
         plt.savefig(output)
 
 
-def stacked_plot(calibrated_ages,name='Stacked plot',oxcal=False, BP='bp', output=None):
+def stacked_plot(calibrated_ages,name='Stacked plot',oxcal=True, BP='bp', output=None):
     '''Plot multiple calibrated ages, vertically stacked.
 
     ``calibrated_ages`` is an iterable of CalAge objects.'''
