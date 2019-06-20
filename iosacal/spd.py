@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with IOSACal.  If not, see <http://www.gnu.org/licenses/>.
 
+import numpy as np
 
 def spdsum(spdlist, norm=True):
     """ Sums several SPDs stored in a list.
